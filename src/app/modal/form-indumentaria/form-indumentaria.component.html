@@ -1,0 +1,149 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+  <h2>Llena los campos requeridos (*)</h2>
+  <div>
+    <br>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Pais</mat-label>
+            <mat-select matNativeControl formControlName="pai_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of paises">{{
+                item.nombre }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Programa</mat-label>
+            <mat-select matNativeControl formControlName="certificacion_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of certificaciones">{{
+                item.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('certificacion_id')?.hasError('required')">Programa es
+              requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Nombre" formControlName="nombre" required>
+            <mat-error *ngIf="dataForm.get('nombre')?.hasError('required')">Nombre es requerido</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Cod Producto</mat-label>
+            <input matInput placeholder="Cod Producto" formControlName="codigo_producto" required>
+            <mat-error *ngIf="dataForm.get('codigo_producto')?.hasError('required')">Cod Producto es
+              requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Descripción</mat-label>
+            <textarea matInput placeholder="Descripción" formControlName="descripcion"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Talla</mat-label>
+            <input matInput placeholder="Talla" formControlName="talla" required>
+            <mat-error *ngIf="dataForm.get('talla')?.hasError('required')">Talla es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Tipo</mat-label>
+            <input matInput placeholder="Tipo" formControlName="tipo" required>
+            <mat-error *ngIf="dataForm.get('tipo')?.hasError('required')">Tipo es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-label>Precio</mat-label>
+              <input matInput type="number" placeholder="Precio" formControlName="precio" required>
+              <mat-error *ngIf="dataForm.get('precio')?.hasError('required')">Precio es requerido</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-label>Descuento</mat-label>
+              <input matInput type="number" placeholder="Descuento" formControlName="descuento" required>
+              <mat-error *ngIf="dataForm.get('descuento')?.hasError('required')">Descuento es requerido</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-label>Estado</mat-label>
+              <mat-select matNativeControl formControlName="estado" required>
+                <mat-option [value]="item" *ngFor="let item of ['activo','inactivo']">{{
+                  item }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="dataForm.get('estado')?.hasError('required')">Estado es requerido</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+    <hr class="my-4">
+
+    <div class="row justify-content-center">
+      <h2 class="text-center">Documenteos Galeria</h2>
+      <file-upload [control]="controladjunto">
+        <ng-template let-isFileDragDropAvailable="isFileDragDropAvailable" #placeholder>
+          <file-upload-drop-zone>
+            <ng-container *ngIf="isFileDragDropAvailable; else isNotDragDropAvailable">
+              <b>Arrastrar y soltar</b><br> O haga clic aquí
+            </ng-container>
+            <ng-template #isNotDragDropAvailable>
+              <b>haga clic aquí</b> o<br> Seleccione un archivo
+            </ng-template>
+          </file-upload-drop-zone>
+        </ng-template>
+        <ng-template let-i="index" let-file="file" let-control="control" #item>
+          <file-upload-list-item [index]="i" [file]="file" [control]="control">Eliminar</file-upload-list-item>
+        </ng-template>
+      </file-upload>
+
+      <table *ngIf="data && data.galerias && data.galerias.length"
+        class="table table-striped table-inverse table-responsive">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Nombre</th>
+            <th>Descargar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data.galerias;let i = index">
+            <td scope="row">{{ item.imagen }}</td>
+            <td><a target="_blank" [href]="item.ruta" [download]="item.imagen">Descargar</a>
+            </td>
+            <td>
+              <button mat-raised-button color="primary" class="save-button" (click)="deleteGaleria(item,i)"
+                aria-label="SAVE">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid"
+    aria-label="SAVE">
+    Guardar
+  </button>
+</mat-dialog-actions>

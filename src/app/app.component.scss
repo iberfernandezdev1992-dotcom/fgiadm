@@ -1,0 +1,98 @@
+/* Toolbar */
+.app-header {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #15384e;
+  color: white;
+}
+.app-header.mobile .app-title {
+  margin-left: 0.5rem;
+}
+.menu-btn {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.app-title {
+  flex-grow: 1;
+  font-size: 1.2rem;
+}
+
+/* Layout */
+.app-layout {
+  display: flex;
+  height: calc(100vh - 56px);
+}
+
+/* Sidebar */
+.app-sidebar {
+  width: 240px;
+  background-color: #1e2f3f;
+  color: white;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+.app-sidebar.closed {
+  transform: translateX(-100%);
+}
+.sidebar-logo img {
+  width: 100%;
+  display: block;
+  margin-bottom: 1rem;
+}
+.app-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.app-sidebar li a {
+  display: block;
+  padding: 0.8rem 1rem;
+  color: white;
+  text-decoration: none;
+  border-left: 4px solid transparent;
+  transition: all 0.2s;
+}
+.app-sidebar li a:hover,
+.app-sidebar li a.active {
+  background-color: #0f2330;
+  border-left: 4px solid #fff;
+}
+
+/* Main content */
+.app-content {
+  flex-grow: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+.submenu {
+  list-style: none;
+  padding-left: 1.5rem;
+  background-color: #162934;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.submenu.open {
+  max-height: 500px; /* suficiente para mostrar todos los subitems */
+}
+.submenu li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  text-decoration: none;
+}
+.submenu li a:hover,
+.submenu li a.active {
+  background-color: #0f2330;
+}
+.arrow {
+  float: right;
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+.arrow.down {
+  transform: rotate(90deg);
+}

@@ -1,0 +1,505 @@
+<div class="flex flex-col flex-auto w-full">
+  <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+    <!-- <mat-toolbar color="primary" class="mt-0">
+      <mat-toolbar-row>
+        <span>CLIENTE</span>
+        <span class="example-spacer"></span>
+        <p>{{ data.nombres }} {{ data.apellidos }}</p>
+      </mat-toolbar-row>
+    </mat-toolbar> -->
+    <div class="container mt-2">
+      <form *ngIf="dataForm" [formGroup]="dataForm">
+        <div class="row g-3">
+          <div class="col-md-4">
+
+            <!-- <file-upload [control]="control" [ngClass]="{'fileupload': data.fotografia}">
+                  <ng-template let-isFileDragDropAvailable="isFileDragDropAvailable" #placeholder>
+                    <div style="width:240px" *ngIf="control.size === 0">
+                      <div class="icon">
+                        <mat-icon>upload</mat-icon>
+                      </div>
+
+                      <div class="upload-text">
+                        <ng-container *ngIf="isFileDragDropAvailable; else isNotDragDropAvailable">
+                          <b>Arrastrar y soltar</b> archivos<br> o haga clic aquí
+                        </ng-container>
+                        <ng-template #isNotDragDropAvailable>
+                          <b>haga clic aquí</b> para<br> elegir un archivo
+                        </ng-template>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                  <ng-template let-i="index" let-file="file" let-control="control" #item>
+                    <div class="overlay">
+                      <span class="delete-button" (click)="control.removeFile(file)">
+                        <mat-icon>delete</mat-icon>
+                      </span>
+                      <img *ngIf="control.valid" [src]="uploadedFile | async">
+                    </div>
+                  </ng-template>
+                </file-upload> -->
+            <mat-form-field id="fileimg">
+              <ngx-mat-file-input placeholder="Escoge una fotografía" [formControl]="fileControl" [multiple]="false"
+                accept="image/*" color="primary">
+                <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+              </ngx-mat-file-input>
+            </mat-form-field>
+            <div class="file-list">
+              <div class="file-item text-center">
+                <img width="200px" *ngIf="image" [src]="image ? image : '/assets/img/img-default.jpg'">
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field>
+                  <mat-label>Apellidos</mat-label>
+                  <input class="mayusculas" (keyup)="mayus(apellidos)" #apellidos matInput placeholder="Apellidos"
+                    formControlName="apellidos" required>
+                  <mat-error *ngIf="dataForm.get('apellidos')?.hasError('required')">Apellidos es requerido</mat-error>
+                  <mat-error *ngIf="dataForm.get('apellidos')?.hasError('maxlength')">Apellidos no puede tener más de 50
+                    caracteres</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field>
+                  <mat-label>Nombres</mat-label>
+                  <input class="mayusculas" (keyup)="mayus(name)" #name matInput placeholder="Nombres"
+                    formControlName="nombres" required>
+                  <mat-error *ngIf="dataForm.get('nombres')?.hasError('required')">Nombres es requerido</mat-error>
+                  <mat-error *ngIf="dataForm.get('nombres')?.hasError('maxlength')">Nombres no puede tener más de 50
+                    caracteres</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field>
+                  <!-- <mat-label>Fecha de nacimiento</mat-label>
+                  <input matInput type="date" placeholder="Fecha de nacimiento" formControlName="fecha_nacimiento"
+                    required>
+                  <mat-error *ngIf="dataForm.get('fecha_nacimiento')?.hasError('required')">Fecha de nacimiento es
+                    requerido</mat-error> -->
+                  <mat-label>Fecha de nacimiento</mat-label>
+                  <input matInput type="date" [matDatepicker]="picker" formControlName="fecha_nacimiento" required>
+                  <mat-datepicker-toggle matSuffix matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error *ngIf="dataForm.get('fecha_nacimiento')?.hasError('required')">Fecha de
+                    nacimiento es
+                    requerido</mat-error>
+                  <mat-hint *ngIf="!dataForm.get('fecha_nacimiento')?.hasError('required')">
+                    <small>{{dataForm.value.fecha_nacimiento | date:'longDate' }}</small>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field>
+                  <mat-label>CI</mat-label>
+                  <input matInput placeholder="CI" formControlName="ci" required>
+                  <mat-error *ngIf="dataForm.get('ci')?.hasError('required')">CI es requerido</mat-error>
+                </mat-form-field>
+              </div>
+              <div class=" col-md-4">
+                <mat-form-field>
+                  <mat-label>Celular</mat-label>
+                  <input matInput placeholder="Celular" formControlName="celular" required>
+                  <mat-error *ngIf="dataForm.get('celular')?.hasError('required')">Celular es requerido</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field>
+                  <mat-label>Email (Opcional)</mat-label>
+                  <input matInput placeholder="Email" formControlName="email">
+                  <mat-error *ngIf="dataForm.get('email')?.hasError('email')">Ingrese una dirección de correo
+                    electrónico.</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field>
+                  <mat-label>Pasaporte (Opcional)</mat-label>
+                  <input class="mayusculas" (keyup)="mayus(pasaporte)" #pasaporte matInput placeholder="Pasaporte"
+                    formControlName="pasaporte">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field>
+                  <mat-label>CN (Opcional)</mat-label>
+                  <input class="mayusculas" (keyup)="mayus(cnv)" #cnv matInput placeholder="CN" formControlName="cn">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field>
+                  <mat-label>Responsable</mat-label>
+                  <mat-select matNativeControl formControlName="user_id" required>
+                    <mat-option [value]="item.id" *ngFor="let item of responsables">{{
+                      item.nombre }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-8">
+                <mat-form-field>
+                  <mat-label>Dirección (Opcional)</mat-label>
+                  <input matInput placeholder="Dirección" formControlName="direccion">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-0">
+            <p>Información preliminar <span>*</span> </p>
+            <div fxLayout="row m-0" fxLayoutAlign="start start">
+              <quill-editor placeholder="" class="w-100" [styles]="{height: '150px'}"
+                formControlName="informacion_preliminar"></quill-editor>
+              <mat-error *ngIf="dataForm.get('informacion_preliminar')?.hasError('required')">Información preliminar es
+                requerido</mat-error>
+            </div>
+          </div>
+          <div class="col-12 text-end">
+            <button mat-flat-button color="primary" class="save-button" (click)="guardar()"
+              [disabled]="dataForm.invalid" aria-label="SAVE">
+              Actualizar datos del cliente
+            </button>
+          </div>
+        </div>
+
+        <!-- <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="save-info">
+                <label class="form-check-label" for="save-info">Save this information for next time</label>
+              </div> -->
+      </form>
+      <hr>
+      <nav class="nav nav-pills flex-column flex-sm-row mt-2">
+        <!-- <button class="nav-link active" id="nav-cli-tab" data-bs-toggle="tab" data-bs-target="#nav-cli" type="button"
+          role="tab" aria-controls="nav-cli" aria-selected="true">Cliente</button> -->
+        <button class="bordertab flex-sm-fill text-sm-center nav-link active" id="nav-servicio-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-servicio" type="button" role="tab" aria-controls="nav-servicio"
+          aria-selected="false">Servicios</button>
+        <button class="bordertab flex-sm-fill text-sm-center nav-link" id="nav-citas-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-citas" type="button" role="tab" aria-controls="nav-citas"
+          aria-selected="false">Citas</button>
+
+        <button class="bordertab flex-sm-fill text-sm-center nav-link " id="nav-dep-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-dep" type="button" role="tab" aria-controls="nav-dep"
+          aria-selected="false">Dependientes</button>
+        <button class="bordertab flex-sm-fill text-sm-center nav-link" id="nav-adj-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-adj" type="button" role="tab" aria-controls="nav-adj"
+          aria-selected="false">Adjuntos</button>
+
+      </nav>
+      <div class="tab-content mb-5" id="nav-tabContent">
+        <!-- <div class="tab-pane fade show active" id="nav-cli" role="tabpanel" aria-labelledby="nav-cli-tab" tabindex="0">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error, quaerat facere enim soluta qui consequatur,
+          beatae placeat nemo laudantium dolorum, excepturi eum nihil voluptas in nesciunt sed hic perspiciatis
+          quidem.567
+        </div> -->
+
+        <div class="tab-pane fade" id="nav-dep" role="tabpanel" aria-labelledby="nav-dep-tab" tabindex="0">
+          <!-- dependientes -->
+          <mat-toolbar class="mt-0">
+            <mat-toolbar-row>
+              <!-- <span>Dependientes</span> -->
+              <span class="example-spacer"></span>
+              <button (click)="create()" mat-flat-button color="primary" aria-label="Añadir">
+                Añadir <mat-icon>add</mat-icon>
+              </button>
+            </mat-toolbar-row>
+          </mat-toolbar>
+
+          <!-- <div class="mat-elevation-z8"> -->
+          <section class="example-container mat-elevation-z8" tabindex="0">
+            <table mat-table [dataSource]="dataSource3" #sortdependientes="matSort" matSort>
+
+              <!-- ID Column -->
+              <ng-container matColumnDef="imagen" sticky>
+                <th mat-header-cell *matHeaderCellDef> Imagen </th>
+                <td mat-cell *matCellDef="let row"> <img [src]="row.fotografia ?? 'assets/img/img-default.jpg'"
+                    width="80px" alt=""> </td>
+              </ng-container>
+
+              <!-- Progress Column -->
+              <ng-container matColumnDef="nombres">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                <td class="mayusculas" mat-cell *matCellDef="let row"> {{ row.nombres }} {{ row.apellidos }}
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="ci">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> CI </th>
+                <td mat-cell *matCellDef="let row"> {{ row.ci }} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="celular">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Celular </th>
+                <td mat-cell *matCellDef="let row"> {{ row.celular }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="parentesco">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Parentesco </th>
+                <td mat-cell *matCellDef="let row"> {{ row.parentesco }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="accion" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef> Acción </th>
+                <td mat-cell *matCellDef="let row">
+                  <!-- <button mat-icon-button (click)="editardependiente(row)" class="example-icon"
+                    aria-label="Example icon-button with menu icon"><mat-icon>edit</mat-icon></button> -->
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="botón con menú">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="editardependiente(row)">Editar</button>
+                    <button mat-menu-item (click)="deletedependiente(row)">Eliminar</button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+
+            </table>
+
+            <!-- </div> -->
+          </section>
+          <!-- end dependientes -->
+        </div>
+        <div class="tab-pane fade" id="nav-adj" role="tabpanel" aria-labelledby="nav-adj-tab" tabindex="0">
+          <div class="row">
+            <div class="col-12">
+              <file-upload [control]="controladjunto">
+                <ng-template let-isFileDragDropAvailable="isFileDragDropAvailable" #placeholder>
+                  <file-upload-drop-zone>
+                    <ng-container *ngIf="isFileDragDropAvailable; else isNotDragDropAvailable">
+                      <b>Arrastrar y soltar</b><br> O haga clic aquí
+                    </ng-container>
+                    <ng-template #isNotDragDropAvailable>
+                      <b>haga clic aquí</b> o<br> Seleccione un archivo
+                    </ng-template>
+                  </file-upload-drop-zone>
+                </ng-template>
+                <ng-template let-i="index" let-file="file" let-control="control" #item>
+                  <file-upload-list-item [index]="i" [file]="file" [control]="control">Eliminar</file-upload-list-item>
+                </ng-template>
+              </file-upload>
+            </div>
+            <div class="col-12 text-end mb-1">
+              <button [disabled]="!controladjunto.value.length" (click)="guardarAdjuntos()" mat-flat-button
+                color="primary" aria-label="Añadir">
+                Guardar <mat-icon>save</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- <div class="mat-elevation-z8"> -->
+          <section class="example-container mat-elevation-z8" tabindex="0">
+            <table mat-table [dataSource]="dataSource2" #tablaadjuntos #sortabjunto="matSort" matSort>
+
+              <!-- ID Column -->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
+              </ng-container>
+
+              <!-- Progress Column -->
+              <ng-container matColumnDef="descarga">
+                <th mat-header-cell *matHeaderCellDef> Descargar </th>
+                <td mat-cell *matCellDef="let row"> <a target="_blank" [href]="row.ruta"
+                    [download]="row.nombre">Descargar</a>
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="eliminar" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+                <td mat-cell *matCellDef="let row">
+                  <button (click)="eliminarAdjunto(row)" mat-icon-button class="example-icon" aria-label="">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+
+            </table>
+
+            <!-- </div> -->
+          </section>
+          <!-- end adjuntos -->
+        </div>
+        <div class="tab-pane fade" id="nav-citas" role="tabpanel" aria-labelledby="nav-citas-tab" tabindex="0">
+          <mat-toolbar class="mt-0">
+            <mat-toolbar-row>
+              <span class="example-spacer"></span>
+              <button (click)="addcitas()" mat-flat-button color="primary" aria-label="Añadir">
+                Añadir <mat-icon>add</mat-icon>
+              </button>
+            </mat-toolbar-row>
+          </mat-toolbar>
+
+          <!-- <div class="mat-elevation-z8"> -->
+          <section class="example-container mat-elevation-z8" tabindex="0">
+            <table mat-table [dataSource]="dataSource1" #tablacitas #sortcitas="matSort" matSort>
+
+              <!-- ID Column -->
+              <ng-container matColumnDef="etapa" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Etapa </th>
+                <td mat-cell *matCellDef="let row"> {{row.etapa}} </td>
+              </ng-container>
+
+              <!-- Progress Column -->
+              <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                <td mat-cell *matCellDef="let row"> {{row.estado}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="start">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Inicio </th>
+                <td mat-cell *matCellDef="let row">
+                  <div style="min-width: 100px;">{{row.start | date:'d MMMM y, h:mm a'}}</div>
+                </td>
+              </ng-container>
+
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="end">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fin </th>
+                <td mat-cell *matCellDef="let row">
+                  <div style="min-width: 100px;">{{row.end | date:'d MMMM y, h:mm a'}}</div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="resumen">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Resumen </th>
+                <td mat-cell *matCellDef="let row"> <small>{{row.resumen}}</small> </td>
+              </ng-container>
+
+              <ng-container matColumnDef="accion" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef> Acción </th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button [matMenuTriggerFor]="menucita" aria-label="botón con menú">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menucita="matMenu">
+                    <button mat-menu-item (click)="addcitas(row)">Editar</button>
+                    <!-- <button mat-menu-item (click)="deletecitas(row)">Eliminar</button> -->
+                    <button mat-menu-item [matMenuTriggerFor]="estado">Cambiar estado</button>
+                  </mat-menu>
+                  <mat-menu #estado="matMenu">
+                    <button mat-menu-item (click)="cambiarestado(row,item)"
+                      *ngFor="let item of ['Pendiente','Completado','Reprogramado']">{{
+                      item }}</button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+
+            </table>
+            <!-- </div> -->
+          </section>
+          <!-- citaend -->
+        </div>
+        <div class="tab-pane fade show active" id="nav-servicio" role="tabpanel" aria-labelledby="nav-servicio-tab"
+          tabindex="0">
+          <!-- ventas -->
+          <mat-toolbar class="mt-0">
+            <mat-toolbar-row>
+              <span class="example-spacer"></span>
+              <button (click)="addservicio()" mat-flat-button color="primary" aria-label="Añadir">
+                Añadir <mat-icon>add</mat-icon>
+              </button>
+            </mat-toolbar-row>
+          </mat-toolbar>
+          <section class="example-container mat-elevation-z8" tabindex="0">
+
+            <!-- <div class="mat-elevation-z8"> -->
+            <table mat-table [dataSource]="dataSourceventas" #tablaventas #sortventas="matSort" matSort>
+
+              <!-- ID Column -->
+              <ng-container matColumnDef="servicios" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicios </th>
+                <td mat-cell *matCellDef="let row">
+                  <span *ngFor="let item of row.servicios; let i = index">{{ item.nombre }} <span
+                      *ngIf="i !=row.servicios.length - 1">,</span> </span>
+                </td>
+              </ng-container>
+
+              <!-- Progress Column -->
+              <ng-container matColumnDef="monto">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Subtotal </th>
+                <td mat-cell *matCellDef="let row"> {{row.monto}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="descuento">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Descuento </th>
+                <td mat-cell *matCellDef="let row"> {{row.descuento}} </td>
+              </ng-container>
+
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+                <td mat-cell *matCellDef="let row"> {{row.total}} </td>
+              </ng-container>
+
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="pagado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Pagado </th>
+                <td mat-cell *matCellDef="let row"> {{parse(row.pagado)}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="saldo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo </th>
+                <td mat-cell *matCellDef="let row"> {{parse(row.saldo)}} </td>
+              </ng-container>
+
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                <td mat-cell *matCellDef="let row"> {{row.estado}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Creado </th>
+                <td mat-cell *matCellDef="let row"> {{row.created_at | date:'d MMMM y, h:mm a'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="accion" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef> Acción </th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="botón con menú">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="verventa(row)">Ver y Pagar</button>
+                    <button mat-menu-item (click)="deleteventa(row)">Eliminar</button>
+                    <button mat-menu-item [matMenuTriggerFor]="estado">Cambiar estado</button>
+                    <!-- <button mat-menu-item (click)="verCliente(row)">Ver</button> -->
+                  </mat-menu>
+                  <mat-menu #estado="matMenu">
+                    <button mat-menu-item (click)="cambiarestadoVenta(row,item)"
+                      *ngFor="let item of ['En curso','Terminado','Fallido']">{{ item }}</button>
+                  </mat-menu>
+                  <!-- <button (click)="deleteventa(row)" mat-icon-button class="example-icon" aria-label="">
+                            <mat-icon>delete</mat-icon>
+                          </button> -->
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsventas"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsventas;"></tr>
+
+            </table>
+            <!-- </div> -->
+          </section>
+          <!-- ventasend -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

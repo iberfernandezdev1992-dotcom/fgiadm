@@ -1,0 +1,187 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Structure */
+.example-container {
+  position: relative;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.example-table-container {
+  position: relative;
+  min-height: 200px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  overflow: auto;
+
+}
+tr{
+  font-size: 12px !important;
+}
+
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}
+
+mat-form-field {
+    font-size: 12px !important;
+    width: 100%;
+}
+mat-select, mat-option{
+  font-size: 12px !important;
+}
+.mdc-text-field--filled .mdc-floating-label {
+    font-size: 12px !important;
+}
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.mdc-dialog__surface {
+    overflow-y: inherit !important;
+}
+#fileimg .mat-mdc-form-field-infix {
+    padding: 0px !important;
+}
+// .fc-scroller-liquid-absolute {
+//     position: absolute !important;
+//     top: 0 !important;
+//     left: 0 !important;
+//     bottom: 0 !important;
+//     right: 0 !important;
+//     overflow: hidden scroll !important;
+// }
+// .fc-bg-event, .fc-highlight, .fc-non-business, .fc-view-harness-active>.fc-view {
+//     position: absolute !important;
+//     top: 0 !important;
+//     left: 0 !important;
+//     bottom: 0 !important;
+//     right: 0 !important;
+// }
+// .fc-theme-standard .fc-scrollgrid {
+//     border: 1px solid #ddd !important;
+// }
+// .fc-view-harness .fc-view-harness-active{
+//   border: 1px solid #ddd !important;
+// }
+
+// .fc-scrollgrid table {
+//     border-collapse: collapse!important;
+//     border-top-style: hidden!important;
+//     border-left-style: hidden!important;
+//     border-right-style: hidden!important;
+// }
+
+// .fc-day-grid-container{
+//    overflow:visible!important;height:auto!important
+// }
+
+// .fc-header-toolbar{
+//   position: sticky !important;
+//     top: 1px !important;
+//     z-index: 3333333 !important;
+//     background: #2d2b7f7d !important;
+// }
+// .fc-scrollgrid-liquid thead{
+//   position: sticky !important;
+//     // top: 0px !important;
+//     top: 40px !important;
+//     z-index: 3333333 !important;
+//     background: rgba(45, 43, 127, 0.4901960784) !important;
+// }
+
+// #fullCalendarval {
+//   max-width: 900px;
+//   margin: 0 auto;
+// }
+// ///////////
+// .fc-scroller-harness {
+//     position: relative;
+//     overflow: hidden;
+//     direction: ltr;
+// }
+// .fc-scroller-liquid-absolute {
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     left: 0;
+//     bottom: 0;
+// }
+// //Styles added to show Horizontal Scroll Bar
+// .fc-view-container {
+//   width: auto;
+// }
+
+// .fc-view-container .fc-view {
+//   overflow-x: scroll;
+// }
+
+// .fc-view-container .fc-view > table {
+//   width: 2500px;
+// }
+
+.mat-column-saldo {
+  text-align: right !important;
+  width: 100px;
+  border-right: 1px solid currentColor;
+}
+.mat-column-pagado {
+  text-align: right !important;
+  width: 100px;
+  border-right: 1px solid currentColor;
+}
+.mat-column-total {
+  text-align: right !important;
+  width: 100px;
+  border-right: 1px solid currentColor;
+}
+.mat-column-monto {
+  text-align: right !important;
+  width: 100px;
+  border-right: 1px solid currentColor;
+}
+.mat-column-descuento {
+  text-align: right !important;
+  width: 100px;
+  border-right: 1px solid currentColor;
+}
+.mayusculas {
+  text-transform: uppercase !important;
+}
+.fc-event {
+    // border: 1px solid #2d2b7f; /* default BORDER color */
+    // background-color: #3f51b5; /* default BACKGROUND color */
+    font-size: 1em;            /* EDIT HERE */
+    cursor: default;
+    text-transform: uppercase;
+}

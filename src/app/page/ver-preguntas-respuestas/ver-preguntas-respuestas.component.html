@@ -1,0 +1,39 @@
+<div class="pregunta-list-container">
+  <h2>Listado de Preguntas</h2>
+
+  <div class="add-button">
+    <button mat-raised-button color="primary" (click)="agregarPregunta()">
+      <mat-icon>add</mat-icon>
+      Agregar Pregunta
+    </button>
+  </div>
+
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let pregunta of preguntas; let i = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ pregunta.pregunta }}
+        </mat-panel-title>
+        <mat-panel-description>
+          Tipo: {{ pregunta.tipo_pregunta }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="pregunta-content">
+        <p><strong>Pregunta:</strong> {{ pregunta.pregunta }}</p>
+        <p><strong>Tipo de Pregunta:</strong> {{ pregunta.tipo_pregunta }}</p>
+        <p><strong>Respuesta Correcta:</strong> {{ pregunta.respuesta_correcta }}</p>
+      
+        <p><strong>Opciones de Respuesta:</strong></p>
+        <ul>
+          <li *ngFor="let opcion of pregunta.opciones_respuesta">{{ opcion }}</li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <button mat-button color="accent" (click)="editarPregunta(pregunta)">Editar</button>
+        <button mat-button color="warn" (click)="eliminarPregunta(pregunta)">Eliminar</button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

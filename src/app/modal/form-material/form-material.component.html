@@ -1,0 +1,99 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+  <h2>Llena los campos requeridos (*)</h2>
+  <div>
+    <br>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-label>Volumenes</mat-label>
+                <mat-select matNativeControl formControlName="volumen_id" required>
+                  <mat-option [value]="item.id" *ngFor="let item of volumens">{{
+                    item.nombre }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="dataForm.get('volumen_id')?.hasError('required')">Volumen es
+                  requerido</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Nombre" formControlName="name" required>
+                <mat-error *ngIf="dataForm.get('name')?.hasError('required')">Nombre es requerido</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-label>Tipo</mat-label>
+                <mat-select matNativeControl formControlName="tipo" required>
+                  <mat-option [value]="item" *ngFor="let item of ['Video','Audio','Pdf']">{{
+                    item }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="dataForm.get('tipo')?.hasError('required')">Tipo es requerido</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div *ngIf="dataForm.get('tipo')?.value != 'Video' " class="col-md-6">
+              <mat-form-field>
+                <ngx-mat-file-input placeholder="Escoge un archivo" formControlName="ruta" [multiple]="false" accept="*"
+                  color="primary">
+                  <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+                </ngx-mat-file-input>
+              </mat-form-field>
+              <a [href]="data.ruta" target="_blank" rel="noopener noreferrer">Ver</a>
+            </div>
+            <div *ngIf="dataForm.get('tipo')?.value == 'Video' || dataForm.get('tipo')?.value === 'Video_Examen'" class="col-md-6">
+              <mat-form-field>
+                <mat-label>URL</mat-label>
+                <input matInput placeholder="URL" formControlName="ruta" required>
+                <mat-error *ngIf="dataForm.get('ruta')?.hasError('required')">URL es requerido</mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div *ngIf="dataForm.get('tipo')?.value != 'Pdf'" class="row">
+            <div class="col-md-4">
+              <mat-form-field>
+                <ngx-mat-file-input placeholder="Escoge una portada" formControlName="portada" [multiple]="false"
+                  accept="*" color="primary">
+                  <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+                </ngx-mat-file-input>
+              </mat-form-field>
+              <a [href]="data.portada" target="_blank" rel="noopener noreferrer">Ver</a>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <ngx-mat-file-input placeholder="Escoge un manual" formControlName="manual" [multiple]="false"
+                  accept="*" color="primary">
+                  <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+                </ngx-mat-file-input>
+              </mat-form-field>
+              <a [href]="data.manual" target="_blank" rel="noopener noreferrer">Ver</a>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <ngx-mat-file-input placeholder="Escoge una notas coreográfica" formControlName="nota"
+                  [multiple]="false" accept="*" color="primary">
+                  <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+                </ngx-mat-file-input>
+              </mat-form-field>
+              <a [href]="data.nota" target="_blank" rel="noopener noreferrer">Ver</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid"
+    aria-label="SAVE">
+    Guardar
+  </button>
+</mat-dialog-actions>

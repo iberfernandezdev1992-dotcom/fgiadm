@@ -1,0 +1,375 @@
+<!-- <h1 mat-dialog-title>Cita para: </h1> -->
+<mat-dialog-content class="mat-typography">
+  <div [ngSwitch]="dataval.vista">
+    <div *ngSwitchCase="'Venta'">
+      <div class="row g-3">
+        <div class="col-12">
+          <table class="table table-light">
+            <thead>
+              <tr>
+                <th>Detalle</th>
+                <th>Costo Unitario</th>
+                <th>Cantidad</th>
+                <th>Sub total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data.servicios; let i = index">
+                <td>
+                  {{ item.nombre }}
+                </td>
+                <td>
+                  {{ item.pivot.precio }}
+                </td>
+                <td>
+                  {{ item.pivot.cantidad }}
+                </td>
+                <td class="text-end">
+                  {{ item.pivot.subtotal }}
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">
+
+                </td>
+                <td>
+                  <p><strong>Descuento</strong></p>
+                </td>
+                <td class="text-end">
+                  {{ data.descuento }}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+
+                </td>
+                <td>
+                  <p><strong>Total a pagar</strong></p>
+                </td>
+                <td class="text-end">
+                  {{ parse(data.total) }}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+
+                </td>
+                <td>
+                  <p><strong>Total pagado</strong></p>
+                </td>
+                <td class="text-end">
+                  {{ parse(totalpagado()) }}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+
+                </td>
+                <td>
+                  <p><strong>Total restante</strong></p>
+                </td>
+                <td class="text-end">
+                  {{ parse(data.total - totalpagado()) }}
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="2">
+
+                </td>
+                <td>
+                  <p><strong>Estado</strong></p>
+                </td>
+                <td class="text-end">
+                  {{ data.estado }}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <hr>
+          <h4>Pagos</h4>
+          <table class="table table-light">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Metodo de pago</th>
+                <th>Monto</th>
+                <th>Numero de recibo</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data.pagos; let i = index">
+                <td>
+                  {{ item.fecha | date:'longDate' }}
+                </td>
+                <td>
+                  {{ item.metodo_pago }}
+                </td>
+                <td>
+                  {{ item.monto }}
+                </td>
+                <td>
+                  RC/#{{ item.id }}
+                </td>
+                <td>
+                  <button (click)="deleteventa(item,i)" mat-icon-button class="example-icon" aria-label="">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button (click)="reciboprint(item)" mat-icon-button class="example-icon" aria-label="">
+                    <mat-icon>print</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Método de pago</mat-label>
+            <mat-select [(ngModel)]="pago.metodo_pago" matNativeControl>
+              <mat-option [value]="item" *ngFor="let item of ['Efectivo','Transferencia Bancaria']">{{ item
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Pagado en</mat-label>
+            <input matInput type="date" [matDatepicker]="picker" [(ngModel)]="pago.fecha">
+            <mat-datepicker-toggle matSuffix matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-hint *ngIf="pago.fecha">
+              <small>{{ pago.fecha | date:'longDate' }}</small>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Monto</mat-label>
+            <input type="number" [(ngModel)]="pago.monto" #monto (keyup)="calcularmontoapagar()" matInput
+              placeholder="00.0">
+          </mat-form-field>
+        </div>
+        <!-- <div class="col-md-12">
+          <mat-form-field>
+            <mat-label>Número Recibo</mat-label>
+            <input [(ngModel)]="pago.numero_recibo" matInput placeholder="123">
+          </mat-form-field>
+        </div> -->
+        <div class="col-md-12 text-end">
+          <button mat-raised-button color="primary" class="save-button" (click)="guardarpago()" [disabled]="!pago.monto"
+            aria-label="SAVE">
+            Guardar Pago
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" [mat-dialog-close]="cambios" aria-label="Cancelar">
+    Cerrar
+  </button>
+  <button (click)="reciboprintventa()" mat-flat-button color="primary" class="save-button" aria-label="SAVE">
+    Imprimir
+  </button>
+</mat-dialog-actions>
+
+
+
+<div style="display:none">
+  <div #tableventaRef class="col-12">
+    <table class="table table-sm table-light">
+      <thead>
+        <tr>
+          <td colspan="2">
+            <strong>Cliente:</strong> {{ cliente.nombre }} {{ cliente.apellidos }}
+            <span *ngIf="cliente.ci">
+              <br>
+              <strong>CI:</strong> {{ cliente.ci }}
+            </span>
+            <span *ngIf="cliente.celular">
+              <br>
+              <strong>Móvil:</strong> {{ cliente.celular }}
+            </span>
+          </td>
+          <td colspan="2">
+            <div class="text-center">
+              <hr style="margin-bottom: 1px;margin-top: 2rem;">
+              <strong>Firma</strong>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th colspan="4">
+            <h5 class="text-center" style="font-weight: bold;">Servicios</h5>
+          </th>
+        </tr>
+        <tr>
+          <th>Detalle</th>
+          <th>Costo Unitario</th>
+          <th>Cantidad</th>
+          <th>Sub total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data.servicios; let i = index">
+          <td>
+            {{ item.nombre }}
+          </td>
+          <td>
+            {{ item.pivot.precio }}
+          </td>
+          <td>
+            {{ item.pivot.cantidad }}
+          </td>
+          <td class="text-end">
+            {{ item.pivot.subtotal }}
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">
+          </td>
+          <td>
+            <p><strong>Descuento</strong></p>
+          </td>
+          <td class="text-end">
+            {{ data.descuento }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+          </td>
+          <td>
+            <p><strong>Total a pagar</strong></p>
+          </td>
+          <td class="text-end">
+            {{ parse(data.total) }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+
+          </td>
+          <td>
+            <p><strong>Total pagado</strong></p>
+          </td>
+          <td class="text-end">
+            {{ parse(totalpagado()) }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+
+          </td>
+          <td>
+            <p><strong>Total restante</strong></p>
+          </td>
+          <td class="text-end">
+            {{ parse(data.total - totalpagado()) }}
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+
+          </td>
+          <td>
+            <p><strong>Estado</strong></p>
+          </td>
+          <td class="text-end">
+            {{ data.estado }}
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    <table class="table table-sm table-light">
+      <thead>
+        <tr>
+          <th colspan="4">
+            <h5 class="text-center" style="font-weight: bold;">Pagos</h5>
+          </th>
+        </tr>
+        <tr>
+          <th>Fecha</th>
+          <th>Metodo de pago</th>
+          <th>Monto</th>
+          <th>Numero de recibo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data.pagos; let i = index">
+          <td>
+            {{ item.fecha | date:'longDate' }}
+          </td>
+          <td>
+            {{ item.metodo_pago }}
+          </td>
+          <td>
+            {{ item.monto }}
+          </td>
+          <td>
+            RC/#{{ item.id }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div #tableRef>
+    <table class="table table-sm" style="width:100%">
+      <thead>
+        <tr>
+          <th colspan="2">
+            <h3 class="text-center" style="font-weight: bold;">Recibo</h3>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Cliente: <strong>{{ cliente.nombre }} {{ cliente.apellidos }}</strong>
+            <span *ngIf="cliente.ci">
+              <br>
+              CI: {{ cliente.ci }}
+            </span>
+            <span *ngIf="cliente.celular">
+              <br>
+              Móvil: {{ cliente.celular }}
+            </span>
+          </td>
+          <td>
+            <address>
+              <strong>Fitness Group</strong>
+              <br>av. villavicencio
+              <br>Cochabamba,Cochabamba,Bolivia
+              <br>Móvil: 76459839
+            </address>
+          </td>
+        </tr>
+        <tr *ngIf="pagoprint">
+          <td>
+            <strong>Monto :</strong>
+            {{ pagoprint.monto }} <br>
+            <strong>Método de pago :</strong>
+            {{ pagoprint.metodo_pago }}<br>
+          </td>
+          <td>
+            <b>Numero de recibo:</b>
+            RC/#{{ pagoprint.id }}
+            <br>
+            <b>Pagado en:</b> {{ pagoprint.fecha | date:'longDate' }}<br>
+            <br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

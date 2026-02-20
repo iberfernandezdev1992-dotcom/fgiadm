@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Comprobante de Compra</h2>
+<mat-dialog-content>
+  <!-- Sección de Volumen -->
+  <!-- <div class="data-section">
+    <div class="label">Volumen:</div>
+    <img [src]="data.volumen.imagen" alt="Volumen Imagen">
+    <p>Nombre: {{ data.volumen.nombre }}</p>
+    <p>Descripción: {{ data.volumen.descripcion }}</p>
+    <p>Precio: {{ data.volumen.precio }}</p>
+  </div> -->
+  
+  <!-- Sección de Certificación -->
+  <div class="data-section">
+    <div class="label">Certificación:</div>
+    <img [src]="data.certificacion.imagen" alt="Certificación Imagen">
+    <p>Nombre: {{ data.certificacion.nombre }}</p>
+    <!-- <p>Descripción: {{ data.volumen.certificacion.descripcion }}</p> -->
+  </div>
+
+  <!-- Sección del Instructor -->
+  <div class="data-section">
+    <h3>Instructor</h3>
+    <div class="label">Detalles del Instructor:</div>
+    <img [src]="data.instructor.imagen" alt="Instructor Imagen">
+    <p>Nombre: {{ data.instructor.primer_nombre }} {{ data.instructor.apellido_paterno }} {{ data.instructor.apellido_materno }}</p>
+    <p>Email: {{ data.instructor.email }}</p>
+    <p>Celular: {{ data.instructor.celular }}</p>
+    <p>Descripción: {{ data.instructor.descripcion }}</p>
+  </div>
+  
+  <!-- Sección de Pago -->
+  <div class="data-section">
+    <h3>Pagos</h3>
+    <div *ngFor="let item of data.pagos">
+      <p>Monto: {{ item.monto }}</p>
+      <p>Forma de Pago: {{ item.forma_pago }}</p>
+    </div>
+    <div align="center"> 
+        <h3>Comprobante de Pago</h3>
+        <img [src]="data.imagen" alt="">
+
+    </div>
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onClose()">Cerrar</button>
+</mat-dialog-actions>

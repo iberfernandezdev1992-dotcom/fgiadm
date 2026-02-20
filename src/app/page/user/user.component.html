@@ -1,0 +1,102 @@
+<div class="flex flex-col flex-auto w-full">
+  <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+    <mat-toolbar color="primary" class="mt-0">
+      <mat-toolbar-row>
+        <span>USUARIOS</span>
+        <span class="example-spacer"></span>
+        <button (click)="create()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <!-- Filtros -->
+    <mat-form-field>
+      <mat-icon matPrefix class="icon-size-5">search</mat-icon>
+      <input matInput [autocomplete]="'off'" [placeholder]="'Buscar'" #search>
+      <button *ngIf="ifvalInput()" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <div class="example-container mat-elevation-z8">
+      <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+          Se alcanzó el límite de tasa de API.Se restablecerá en un minuto.
+        </div>
+      </div>
+
+      <div class="example-table-container sm:overflow-y-auto table-responsive">
+
+        <table mat-table matTableExporter [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+          multiTemplateDataRows matSortActive="created_at" matSortDisableClear matSortDirection="desc"
+          class="mat-elevation-z8 w-full">
+
+          <ng-container matColumnDef="id" sticky>
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+          <ng-container matColumnDef="pais">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Pais </th>
+            <td mat-cell *matCellDef="let element"> {{element?.pais?.nombre}} </td>
+          </ng-container>
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="rol">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
+            <td mat-cell *matCellDef="let element"> {{element.rol}} </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+            <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="created_at">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Creado </th>
+            <td mat-cell *matCellDef="let element"> {{element.created_at | date:'longDate'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones" stickyEnd style="width: 15%;">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="botón con menú">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="edit(element)">Editar</button>
+                <!-- <button mat-menu-item (click)="delete(element)">Eliminar</button> -->
+                <!-- <button mat-menu-item [matMenuTriggerFor]="estado">Cambiar estado</button> -->
+              </mat-menu>
+              <!-- <mat-menu #estado="matMenu">
+                <button mat-menu-item (click)="cambiarestado(element,item)"
+                  *ngFor="let item of ['Activo','Inactivo']">{{
+                  item }}</button>
+              </mat-menu> -->
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data</td>
+          </tr>
+        </table>
+      </div>
+      <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)"
+        showFirstLastButtons="true" aria-label="Select page">
+      </mat-paginator>
+      <!-- <mat-paginator #paginator [pageIndex]="currentPage" [pageSize]="filtertable.limit"
+        [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+      </mat-paginator> -->
+    </div>
+  </div>
+</div>

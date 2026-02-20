@@ -1,0 +1,189 @@
+<div class="flex flex-col flex-auto w-full">
+  <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+    <div class="container mt-2">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-lg-6">
+            <img src="{{ data.imagen }}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-lg-6">
+            <div class="card-body">
+              <h5 class="card-title">{{ data.nombre }}</h5>
+              <p class="card-text">
+                <strong>Descripción: </strong> {{ data.descripcion }}
+              </p>
+              <p class="card-text">
+                <strong>Color: </strong> {{ data.color }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <!-- Tabs -->
+      <nav class="nav nav-pills flex-column flex-sm-row mt-2">
+        <button class="bordertab flex-sm-fill text-sm-center nav-link active" id="nav-volumens-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-volumens" type="button" role="tab" aria-controls="nav-volumens"
+          aria-selected="true" (shown.bs.tab)="onTabChange('volumenes')">Volumenes</button>
+        
+        <button class="bordertab flex-sm-fill text-sm-center nav-link" id="nav-examenes-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-examenes" type="button" role="tab" aria-controls="nav-examenes"
+          aria-selected="false" (shown.bs.tab)="onTabChange('examenes')">Examenes</button>
+          <button class="bordertab flex-sm-fill text-sm-center nav-link" id="nav-material-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-material" type="button" role="tab" aria-controls="nav-material"
+          aria-selected="false" (shown.bs.tab)="onTabChange('materiales')">Material de Apoyo</button>
+      </nav>
+
+      <div class="tab-content mb-5" id="nav-tabContent">
+
+        <!-- Volumenes Tab Content -->
+        <div class="tab-pane fade show active" id="nav-volumens" role="tabpanel" aria-labelledby="nav-volumens-tab" tabindex="0">
+          <mat-toolbar class="mt-0">
+            <mat-toolbar-row>
+              <span class="example-spacer"></span>
+              <button (click)="create()" mat-flat-button color="primary" aria-label="Añadir">
+                Añadir <mat-icon>add</mat-icon>
+              </button>
+            </mat-toolbar-row>
+          </mat-toolbar>
+          <section class="example-container mat-elevation-z8" tabindex="0">
+            <table mat-table [dataSource]="dataSourceVolumens" #tablaventas #sort0="matSort" matSort>
+              <!-- Define Columns for Volumenes -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> Orden </th>
+                <td mat-cell *matCellDef="let element"> {{element.order_by}} </td>
+              </ng-container>
+              <ng-container matColumnDef="imagen">
+                <th mat-header-cell *matHeaderCellDef> Imagen </th>
+                <td mat-cell *matCellDef="let element"> <img [src]="element.imagen" width="100px" alt=""> </td>
+              </ng-container>
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+              </ng-container>
+              <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
+                <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+              </ng-container>
+              <ng-container matColumnDef="precio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+                <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
+              </ng-container>
+              <ng-container matColumnDef="certificacion_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Programa </th>
+                <td mat-cell *matCellDef="let element"> {{element.certificacion_id}} </td>
+              </ng-container>
+              <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Creado </th>
+                <td mat-cell *matCellDef="let element"> {{element.created_at | date}} </td>
+              </ng-container>
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="botón con menú">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="vermateriales(element)">Ver materiales</button>
+                    <button mat-menu-item (click)="edit(element)">Editar</button>
+                    <button mat-menu-item (click)="delete(element)">Eliminar</button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </section>
+        </div>
+
+        <!-- Examenes Tab Content -->
+        <div class="tab-pane fade" id="nav-examenes" role="tabpanel" aria-labelledby="nav-examenes-tab" tabindex="0">
+          <mat-toolbar class="mt-0">
+            <mat-toolbar-row>
+              <span class="example-spacer"></span>
+              <button (click)="createExamen()" mat-flat-button color="primary" aria-label="Añadir Examen">
+                Añadir Examen <mat-icon>add</mat-icon>
+              </button>
+            </mat-toolbar-row>
+          </mat-toolbar>
+          <section class="example-container mat-elevation-z8" tabindex="0">
+            <table mat-table [dataSource]="dataSourceExamenes" #tablaExamenes #sort1="matSort" matSort>
+              <!-- Define Columns for Examenes -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+              </ng-container>
+              <ng-container matColumnDef="titulo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                <td mat-cell *matCellDef="let element"> {{element.titulo}} </td>
+              </ng-container>
+              <ng-container matColumnDef="cantidad_preguntas">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad Preguntas </th>
+                <td mat-cell *matCellDef="let element"> {{element.cantidad_preguntas}} </td>
+              </ng-container>
+              
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button [matMenuTriggerFor]="menuExamenes" aria-label="botón con menú">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menuExamenes="matMenu">
+                    <button mat-menu-item [routerLink]="['/verpreguntas',element.id]">Ver Preguntas</button>
+                    <button mat-menu-item (click)="editExamen(element)">Editar</button>
+                    <button mat-menu-item (click)="deleteExamen(element)">Eliminar</button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsExamenes"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsExamenes;"></tr>
+            </table>
+          </section>
+        </div>
+
+          <!-- Material de Apoyo Tab Content -->
+          <div class="tab-pane fade" id="nav-material" role="tabpanel" aria-labelledby="nav-material-tab">
+            <mat-toolbar class="mt-0">
+              <mat-toolbar-row>
+                <span class="example-spacer"></span>
+                <button (click)="createMaterial()" mat-flat-button color="primary">
+                  Añadir Material <mat-icon>add</mat-icon>
+                </button>
+              </mat-toolbar-row>
+            </mat-toolbar>
+            <section class="example-container mat-elevation-z8">
+              <table mat-table [dataSource]="dataSourceMateriales" matSort>
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef> ID </th>
+                  <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+                <ng-container matColumnDef="nombre">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                  <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                </ng-container>
+                <ng-container matColumnDef="url">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Enlace </th>
+                  <td mat-cell *matCellDef="let element"> {{element.url}} </td>
+                </ng-container>
+                <ng-container matColumnDef="acciones">
+                  <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button [matMenuTriggerFor]="menuMaterial" aria-label="Menú">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menuMaterial="matMenu">
+                      <button mat-menu-item (click)="editMaterial(element)">Editar</button>
+                      <button mat-menu-item (click)="deleteMaterial(element)">Eliminar</button>
+                    </mat-menu>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsMateriales"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsMateriales;"></tr>
+              </table>
+            </section>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

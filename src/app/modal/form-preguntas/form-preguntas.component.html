@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+    <h2>Llena los campos requeridos (*)</h2>
+    <div>
+        <form [formGroup]="dataForm">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <div class="row">
+                        <!-- Pregunta Field -->
+                        <div class="col-md-12">
+                            <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Pregunta</mat-label>
+                                <input matInput placeholder="¿Te gustaría seguir un entrenamiento Personal?"
+                                    formControlName="pregunta" required>
+                                <mat-error *ngIf="dataForm.get('pregunta')?.hasError('required')">La pregunta es
+                                    requerida</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Tipo de Pregunta Field -->
+                        <div class="col-md-12">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Tipo de Pregunta</mat-label>
+                                <mat-select formControlName="tipo_pregunta" required (selectionChange)="onTipoPreguntaChange()">
+                                    <mat-option value="verdadero_falso">Verdadero/Falso</mat-option>
+                                    <mat-option value="seleccion_unica">Selección Única</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="dataForm.get('tipo_pregunta')?.hasError('required')">El tipo de
+                                    pregunta es requerido</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Opciones Respuesta Field (visible solo en Selección Única) -->
+                        <div class="col-md-12" *ngIf="dataForm.get('tipo_pregunta')?.value === 'seleccion_unica'">
+                            <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Opciones de Respuesta (separadas por coma)</mat-label>
+                                <input matInput placeholder="Ejemplo: Sí, No, Quizás" formControlName="opciones_respuesta" (input)="updateRespuestaCorrectaOptions()">
+                                <mat-error *ngIf="dataForm.get('opciones_respuesta')?.hasError('required')">Las
+                                    opciones de respuesta son requeridas</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Respuesta Correcta Field -->
+                       <!-- Respuesta Correcta Field -->
+<div class="col-md-12">
+    <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Respuesta Correcta</mat-label>
+        <mat-select formControlName="respuesta_correcta" required>
+            <!-- Mostrar opciones Verdadero/Falso solo si es tipo verdadero_falso -->
+            <mat-option *ngIf="dataForm.get('tipo_pregunta')?.value === 'verdadero_falso'" value="verdadero">Verdadero</mat-option>
+            <mat-option *ngIf="dataForm.get('tipo_pregunta')?.value === 'verdadero_falso'" value="falso">Falso</mat-option>
+
+            <!-- Mostrar opciones de selección única -->
+            <ng-container *ngIf="dataForm.get('tipo_pregunta')?.value === 'seleccion_unica'">
+                <mat-option *ngFor="let opcion of respuestaCorrectaOptions" [value]="opcion">
+                    {{ opcion }}
+                </mat-option>
+            </ng-container>
+        </mat-select>
+        <mat-error *ngIf="dataForm.get('respuesta_correcta')?.hasError('required')">La respuesta correcta es requerida</mat-error>
+    </mat-form-field>
+</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-flat-button color="warn" mat-dialog-close>Cancelar</button>
+    <button mat-flat-button color="primary" (click)="guardar()" [disabled]="dataForm.invalid">Guardar</button>
+</mat-dialog-actions>

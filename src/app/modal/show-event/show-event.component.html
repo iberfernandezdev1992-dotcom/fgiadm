@@ -1,0 +1,261 @@
+<div class="flex flex-col flex-auto w-full">
+  <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+    <!-- <mat-toolbar color="primary" class="mt-0">
+      <mat-toolbar-row>
+        <span>CLIENTE</span>
+        <span class="example-spacer"></span>
+        <p>{{ data.nombres }} {{ data.apellidos }}</p>
+      </mat-toolbar-row>
+    </mat-toolbar> -->
+    <div class="container mt-2">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-lg-4">
+            <img src="{{ data.imagen }}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-lg-4">
+            <div class="card-body">
+              <div class="ql-editor" [innerHTML]="isExpanded ? data.descripcion : (data.descripcion?.slice(0, 150))"></div>
+              <button *ngIf="data.descripcion?.length > 150" (click)="isExpanded = !isExpanded">
+                {{ isExpanded ? 'Ver menos' : 'Ver más' }}
+              </button>
+              
+              <p class="card-text">
+                <strong>Nombre Capacitador: </strong> {{ data.nombre_capacitador }}
+              </p>
+              <p class="card-text">
+                <strong>Precio: </strong> {{ data.precio }}
+              </p>
+              <p class="card-text">
+                <strong>Precio: </strong> {{ data.tipo }}
+              </p>
+              <p class="card-text">
+                <strong>Precio: </strong> {{ data.estado }}
+              </p>
+              <p class="card-text">
+                <strong>Horarios: </strong> {{ data.horarios }}
+              </p>
+              <p class="card-text">
+                <strong>Fecha Inicio: </strong> {{ data.fecha_ini }}
+              </p>
+              <p class="card-text">
+                <strong>Fecha Fin: </strong> {{ data.fecha_fin }}
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <google-map [zoom]="12" [center]="{lat: data.lat, lng: data.lng}" width="100%">
+              <map-marker *ngIf="marker" [position]="marker.position" [label]="marker.label" [title]="marker.title">
+              </map-marker>
+            </google-map>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <nav class="nav nav-pills flex-column flex-sm-row mt-2">
+        <!-- <button class="nav-link active" id="nav-cli-tab" data-bs-toggle="tab" data-bs-target="#nav-cli" type="button"
+          role="tab" aria-controls="nav-cli" aria-selected="true">Cliente</button> -->
+        <button class="bordertab flex-sm-fill text-sm-center nav-link active" id="nav-compras-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-compras" type="button" role="tab" aria-controls="nav-compras"
+          aria-selected="false">Inscritos - Compras</button>
+
+        <button class="bordertab flex-sm-fill text-sm-center nav-link" id="nav-gastos-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-gastos" type="button" role="tab" aria-controls="nav-gastos"
+          aria-selected="false">Gastos</button>
+
+      </nav>
+      <div class="tab-content mb-5" id="nav-tabContent">
+        <!-- <div class="tab-pane fade show active" id="nav-cli" role="tabpanel" aria-labelledby="nav-cli-tab" tabindex="0">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error, quaerat facere enim soluta qui consequatur,
+          beatae placeat nemo laudantium dolorum, excepturi eum nihil voluptas in nesciunt sed hic perspiciatis
+          quidem.567
+        </div> -->
+
+
+        <div class="tab-pane fade show active" id="nav-compras" role="tabpanel" aria-labelledby="nav-compras-tab"
+          tabindex="0">
+          <!-- ventas -->
+          <mat-toolbar class="mt-0">
+            <mat-toolbar-row>
+              <span class="example-spacer"></span>
+              <button (click)="createC()" mat-flat-button color="primary" aria-label="Añadir">
+                Añadir <mat-icon>add</mat-icon>
+              </button>
+            </mat-toolbar-row>
+          </mat-toolbar>
+          <section class="example-container mat-elevation-z8" tabindex="0">
+
+            <!-- <div class="mat-elevation-z8"> -->
+            <table mat-table [dataSource]="dataSourceCompras" #tablaventas #sort0="matSort" matSort>
+
+              <!-- ID Column -->
+              <!-- Progress Column -->
+              <ng-container matColumnDef="imagen">
+                <th mat-header-cell *matHeaderCellDef> Imagen </th>
+                <td mat-cell *matCellDef="let row"> <img [src]="row.instructor.imagen ?? 'assets/img/img-default.jpg'"
+                    width="80px" alt="">
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="volumen" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Programa </th>
+                <td mat-cell *matCellDef="let row"> {{ row.volumen.certificacion.nombre }} - {{ row.volumen.nombre }}
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="instructor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Instructor </th>
+                <td mat-cell *matCellDef="let row">
+                  {{row.instructor.primer_nombre}}
+                  {{row.instructor.segundo_nombre}}
+                  {{row.instructor.apellido_paterno}}
+                  {{row.instructor.apellido_materno}} </td>
+              </ng-container>
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="calificacion_teorico">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Calificación Teorico </th>
+                <td mat-cell *matCellDef="let row"> {{row.calificacion_teorico}} </td>
+              </ng-container>
+              <ng-container matColumnDef="calificacion_practico">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Calificación Practico </th>
+                <td mat-cell *matCellDef="let row"> {{row.calificacion_practico}} </td>
+              </ng-container>
+              <ng-container matColumnDef="calificacion_total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Calificación Total </th>
+                <td mat-cell *matCellDef="let row"> {{row.calificacion_total}} </td>
+              </ng-container>
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="tipo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+                <td mat-cell *matCellDef="let row"> {{row.tipo}} </td>
+              </ng-container>
+
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                <td mat-cell *matCellDef="let row"> {{row.estado}} </td>
+              </ng-container>
+              <ng-container matColumnDef="pagado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Pagado </th>
+                <td mat-cell *matCellDef="let row"> {{ row.pagos.length ? row.pagos[0].monto : '0' }} </td>
+              </ng-container>
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+                <td mat-cell *matCellDef="let row"> {{row.total}} </td>
+              </ng-container>
+
+
+
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Creado </th>
+                <td mat-cell *matCellDef="let row">
+                  <div style="min-width: 100px;">{{row.created_at | date:'d MMMM y, h:mm a'}}</div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="accion" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef> Acción </th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="botón con menú">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item *ngIf="ifauthenticadoAuth(['ceo','administrador','manager'])"
+                    (click)="verventa(row)">Ver</button>
+                    <button mat-menu-item (click)="createC(row)">Editar</button>
+                    <!-- <button mat-menu-item (click)="deletec(row)">Eliminar</button> -->
+                    <button mat-menu-item [matMenuTriggerFor]="estado">Cambiar estado</button>
+                    <!-- <button mat-menu-item (click)="verCliente(row)">Ver</button> -->
+                  </mat-menu>
+                  <mat-menu #estado="matMenu">
+                    <button mat-menu-item (click)="cambiarestadoc(row,item)"
+                      *ngFor="let item of ['pendiente','aprobado','reprobado']">{{ item }}</button>
+                  </mat-menu>
+                  <!-- <button (click)="deleteventa(row)" mat-icon-button class="example-icon" aria-label="">
+                            <mat-icon>delete</mat-icon>
+                          </button> -->
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedCompras"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedCompras;"></tr>
+
+            </table>
+            <!-- </div> -->
+          </section>
+          <!-- ventasend -->
+        </div>
+
+        <div class="tab-pane fade" id="nav-gastos" role="tabpanel" aria-labelledby="nav-gastos-tab" tabindex="0">
+          <mat-toolbar class="mt-0">
+            <mat-toolbar-row>
+              <span class="example-spacer"></span>
+              <button (click)="createG()" mat-flat-button color="primary" aria-label="Añadir">
+                Añadir <mat-icon>add</mat-icon>
+              </button>
+            </mat-toolbar-row>
+          </mat-toolbar>
+
+          <!-- <div class="mat-elevation-z8"> -->
+          <section class="example-container mat-elevation-z8" tabindex="0">
+            <table mat-table [dataSource]="dataSourceGastos" #tablacitas #sortcitas="matSort" matSort>
+
+
+              <ng-container matColumnDef="nombre" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="monto">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Modo </th>
+                <td mat-cell *matCellDef="let row"> <small>{{row.monto}}</small> </td>
+              </ng-container>
+
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                <td mat-cell *matCellDef="let row">
+                  <div style="min-width: 100px;">{{row.fecha | date:'d MMMM y, h:mm a'}}</div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Creado </th>
+                <td mat-cell *matCellDef="let row"> {{row.created_at | date:'d MMMM y, h:mm a'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="accion" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef> Acción </th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button [matMenuTriggerFor]="menucita" aria-label="botón con menú">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menucita="matMenu">
+              
+                    <button mat-menu-item (click)="createG(row)">Editar</button>
+                    <button mat-menu-item (click)="deleteG(row)">Eliminar</button>
+                    <!-- <button mat-menu-item [matMenuTriggerFor]="estado">Cambiar estado</button> -->
+                  </mat-menu>
+                  <!-- <mat-menu #estado="matMenu">
+                            <button mat-menu-item (click)="cambiarestado(row,item)"
+                              *ngFor="let item of ['Pendiente','Completado','Reprogramado']">{{
+                              item }}</button>
+                          </mat-menu> -->
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedGastos"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedGastos;"></tr>
+
+            </table>
+            <!-- </div> -->
+          </section>
+          <!-- citaend -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

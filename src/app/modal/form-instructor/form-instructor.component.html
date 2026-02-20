@@ -1,0 +1,195 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+  <h2>Llena los campos requeridos (*)</h2>
+  <div>
+    <br>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+        <div class="col-md-4">
+
+          <mat-form-field id="fileimg">
+            <ngx-mat-file-input placeholder="Escoge una fotografía" [formControl]="fileControl" [multiple]="false"
+              accept="image/*" color="primary">
+              <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+            </ngx-mat-file-input>
+          </mat-form-field>
+          <div class="file-list">
+            <div class="file-item">
+              <img class="w-100" *ngIf="image" [src]="image ? image : '/assets/img/img-default.jpg'">
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Pais</mat-label>
+            <mat-select (selectionChange)="selectpais($event.value)" matNativeControl formControlName="pai_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of paises">{{
+                item.nombre }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Ciudad</mat-label>
+            <mat-select matNativeControl formControlName="ciudad_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of ciuadads">{{
+                item.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('pai_id')?.hasError('required')">Ciuad es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Primer Nombre</mat-label>
+            <input matInput placeholder="Primer Nombre" formControlName="primer_nombre" required>
+            <mat-error *ngIf="dataForm.get('primer_nombre')?.hasError('required')">Primer Nombre es
+              requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Segundo Nombre</mat-label>
+            <input matInput placeholder="Segundo Nombre" formControlName="segundo_nombre">
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Apellido Paterno</mat-label>
+            <input matInput placeholder="Apellido Paterno" formControlName="apellido_paterno" required>
+            <mat-error *ngIf="dataForm.get('apellido_paterno')?.hasError('required')">Apellido Paterno es
+              requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Apellido Materno</mat-label>
+            <input matInput placeholder="Apellido Materno" formControlName="apellido_materno">
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>CI</mat-label>
+            <input matInput placeholder="CI" formControlName="ci" (keyup)="insertCI()" required>
+            <mat-error *ngIf="dataForm.get('ci')?.hasError('required')">CI es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Emitido</mat-label>
+            <input matInput placeholder="Emitido" formControlName="emitido" required>
+            <mat-error *ngIf="dataForm.get('emitido')?.hasError('required')">Emitido es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Celular</mat-label>
+            <input matInput placeholder="celular" formControlName="celular" required>
+            <mat-error *ngIf="dataForm.get('celular')?.hasError('required')">Celular es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-12">
+          <mat-form-field>
+            <mat-label>Acerca de mi</mat-label>
+            <textarea matInput placeholder="Acerca de mi" formControlName="descripcion" required></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Calificación</mat-label>
+            <input matInput type="number" placeholder="Calificación" formControlName="calificacion" required>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input matInput type="date" [matDatepicker]="picker" formControlName="fecha_nacimiento" required>
+            <mat-datepicker-toggle matSuffix matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="dataForm.get('fecha_nacimiento')?.hasError('required')">Fecha de nacimiento es
+              requerido</mat-error>
+            <mat-hint *ngIf="!dataForm.get('fecha_nacimiento')?.hasError('required')">
+              <small>{{dataForm.value.fecha_nacimiento | date:'longDate' }}</small>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Estado</mat-label>
+            <mat-select matNativeControl formControlName="estado" required>
+              <mat-option [value]="item" *ngFor="let item of ['activo','inactivo']">{{
+                item }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('estado')?.hasError('required')">Estado es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput placeholder="Correo electrónico" formControlName="email" required>
+            <mat-error *ngIf="dataForm.get('email')?.hasError('required')">Correo electrónico es
+              requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Zona</mat-label>
+            <input matInput placeholder="Zona" formControlName="zona">
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Código acceso</mat-label>
+            <input matInput placeholder="Código acceso" formControlName="codigo_acceso">
+            <mat-error *ngIf="dataForm.get('codigo_acceso')?.hasError('required')">Código acceso es
+              requerido</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Tipo</mat-label>
+            <mat-select matNativeControl formControlName="tipo" required>
+              <mat-option [value]="item" *ngFor="let item of ['instructor','normal']">{{
+                item }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('tipo')?.hasError('required')">Tipo es requerido</mat-error>
+          </mat-form-field>
+        </div>
+
+
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Rango</mat-label>
+            <mat-select matNativeControl formControlName="rango_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of rangos">{{
+                item.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('rango_id')?.hasError('required')">Rango es requerido</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Curos de interes</mat-label>
+            <input matInput placeholder="Curos de interes" formControlName="curos_interes">
+          </mat-form-field>
+        </div>
+<div class="col-md-6">
+  <mat-slide-toggle color="primary" formControlName="estado_certificaciones">
+    Control de Certificaciones
+  </mat-slide-toggle>
+</div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid"
+    aria-label="SAVE">
+    Guardar
+  </button>
+</mat-dialog-actions>

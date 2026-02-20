@@ -1,0 +1,19 @@
+<mat-toolbar color="primary" class="mt-0 mb-3">
+  <mat-toolbar-row>
+    <span>Nuevos</span>
+    <span class="example-spacer"></span>
+    <!-- <button (click)="enviarrecordatorio()" mat-icon-button class="example-icon"
+      aria-label="Example icon-button with menu icon">
+      <mat-icon>mail</mat-icon>
+    </button> -->
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-12">
+      <full-calendar [options]="calendarOptions" #fullCalendarval ref="fullCalendarval"></full-calendar>
+    </div>
+  </div>
+</div>

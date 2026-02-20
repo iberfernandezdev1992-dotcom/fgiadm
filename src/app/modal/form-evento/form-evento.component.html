@@ -1,0 +1,190 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+  <h3 class="mb-3 text-primary">Llena los campos requeridos <span class="text-danger">*</span></h3>
+  <form [formGroup]="dataForm">
+    <div class="row g-4">
+      <!-- Imagen -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <ngx-mat-file-input placeholder="Escoge una fotografía" [formControl]="fileControl"
+            [multiple]="false" accept="image/*" color="primary">
+          </ngx-mat-file-input>
+        </mat-form-field>
+        <div class="text-center mt-2">
+          <img class="img-fluid rounded border" *ngIf="image" [src]="image || '/assets/img/img-default.jpg'" style="max-height: 200px;">
+        </div>
+      </div>
+
+      <!-- Nombre -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nombre del Evento</mat-label>
+          <textarea matInput formControlName="nombre"></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- País y Ciudad -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>País</mat-label>
+          <mat-select (selectionChange)="selectpais($event.value)" formControlName="pai_id" required>
+            <mat-option [value]="item.id" *ngFor="let item of paises">{{ item.nombre }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Ciudad</mat-label>
+          <mat-select formControlName="ciudad_id" required>
+            <mat-option [value]="item.id" *ngFor="let item of ciuadads">{{ item.nombre }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="dataForm.get('ciudad_id')?.hasError('required')">Ciudad es requerida</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Programa y Volumen -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Programa</mat-label>
+          <mat-select formControlName="certificado" (selectionChange)="selectcert($event)">
+            <mat-option [value]="item" *ngFor="let item of certificacions">{{ item.nombre }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Volumen</mat-label>
+          <mat-select formControlName="volumen_id" required>
+            <mat-option [value]="item.id" *ngFor="let item of volumens">{{ item.nombre }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="dataForm.get('volumen_id')?.hasError('required')">Volumen es requerido</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Fechas -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Fecha Inicio</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="fecha_ini" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="dataForm.get('fecha_ini')?.hasError('required')">Fecha inicio es requerida</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Fecha Fin</mat-label>
+          <input matInput [matDatepicker]="picker2" formControlName="fecha_fin" required>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          <mat-error *ngIf="dataForm.get('fecha_fin')?.hasError('required')">Fecha fin es requerida</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Horarios, Precio, Capacitador -->
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Horarios</mat-label>
+          <input matInput formControlName="horarios" required>
+          <mat-error *ngIf="dataForm.get('horarios')?.hasError('required')">Horario es requerido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Precio</mat-label>
+          <input matInput formControlName="precio" required>
+          <mat-error *ngIf="dataForm.get('precio')?.hasError('required')">Precio es requerido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nombre Capacitador</mat-label>
+          <input matInput formControlName="nombre_capacitador" required>
+          <mat-error *ngIf="dataForm.get('nombre_capacitador')?.hasError('required')">Nombre del capacitador es requerido</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Dirección -->
+      <div class="col-md-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Dirección</mat-label>
+          <textarea matInput formControlName="direccion" required></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- Tipo y Estado -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="tipo" required>
+            <mat-option [value]="item" *ngFor="let item of ['interno','externo']">{{ item }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="estado" required>
+            <mat-option [value]="item" *ngFor="let item of ['activo','inactivo']">{{ item }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Descripción -->
+      <div class="col-md-12">
+        <label class="mb-2">Descripción <span class="text-danger">*</span></label>
+        <quill-editor placeholder="" class="w-100" [styles]="{height: '150px'}" formControlName="descripcion"></quill-editor>
+        <mat-error *ngIf="dataForm.get('descripcion')?.hasError('required')">Descripción es requerida</mat-error>
+      </div>
+
+      <!-- Gimnasio -->
+      <div class="col-md-12">
+        <h5 class="card-title"><strong>Gimnasio:</strong> {{ gimnasio.nombre }}</h5>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput [matAutocomplete]="auto" [formControl]="searchDataCtrl" placeholder="Gimnasio">
+          <button *ngIf="searchDataCtrl.value" matSuffix mat-icon-button (click)="clearSelection()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-autocomplete [panelWidth]="400" #auto="matAutocomplete" (optionSelected)="onSelected($event)" [displayWith]="displayWith">
+            <mat-option *ngIf="isLoadingData" class="is-loading">Cargando...</mat-option>
+            <ng-container *ngIf="!isLoadingData">
+              <mat-option *ngFor="let item of filteredData" [value]="item">
+                <img alt="" class="example-option-img" [src]="item.imagen" height="25">
+                <span>{{ item.nombre }} {{ item.direccion }}</span>
+              </mat-option>
+            </ng-container>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <!-- Coordenadas -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Latitud</mat-label>
+          <input matInput formControlName="lat" required>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Longitud</mat-label>
+          <input matInput formControlName="lng" required>
+        </mat-form-field>
+      </div>
+
+      <!-- Mapa -->
+      <div class="col-md-12 position-relative">
+        <img [src]="'./assets/img/marker1.png'" id="centerMarkerImage1" #centerMarkerImage1>
+        <google-map [zoom]="zoom" [center]="{lat: lat, lng: lng}" width="100%" (centerChanged)="onCenterChange()"></google-map>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid" aria-label="Guardar">
+    Guardar
+  </button>
+</mat-dialog-actions>

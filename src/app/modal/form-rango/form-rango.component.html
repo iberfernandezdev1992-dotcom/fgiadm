@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+  <h2>Llena los campos requeridos (*)</h2>
+  <div>
+    <br>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+        <div class="col-md-4">
+
+          <mat-form-field id="fileimg">
+            <ngx-mat-file-input placeholder="Escoge una fotografía" [formControl]="fileControl" [multiple]="false"
+              accept="image/*" color="primary">
+              <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+            </ngx-mat-file-input>
+          </mat-form-field>
+          <div class="file-list">
+            <div class="file-item">
+              <img class="w-100" *ngIf="image" [src]="image ? image : '/assets/img/img-default.jpg'">
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Nombre" formControlName="nombre" required>
+                <mat-error *ngIf="dataForm.get('nombre')?.hasError('required')">Nombre es requerido</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>Color</mat-label>
+                <input matInput placeholder="Estado" formControlName="color" required>
+                <mat-error *ngIf="dataForm.get('color')?.hasError('required')">Color es requerido</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid"
+    aria-label="SAVE">
+    Guardar
+  </button>
+</mat-dialog-actions>

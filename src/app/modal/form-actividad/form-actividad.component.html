@@ -1,0 +1,254 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+  <h2>Llena los campos requeridos (*)</h2>
+  <div>
+    <br>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Imagen</mat-label>
+            <ngx-mat-file-input placeholder="Escoge una Imagen" formControlName="imagen" [multiple]="false"
+              accept="image/*" color="primary">
+            </ngx-mat-file-input>
+          </mat-form-field>
+          <div class="file-list">
+            <div class="file-item">
+              <img class="w-100" *ngIf="imagen" [src]="imagen">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Banner</mat-label>
+            <ngx-mat-file-input placeholder="Escoge un banner" formControlName="banner" [multiple]="false"
+              accept="image/*" color="primary">
+              <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+            </ngx-mat-file-input>
+          </mat-form-field>
+          <div class="file-list">
+            <div class="file-item">
+              <img class="w-100" *ngIf="banner" [src]="banner">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Imagen QR</mat-label>
+            <ngx-mat-file-input placeholder="Escoge una Imagen QR" formControlName="img_qr" [multiple]="false"
+              accept="image/*" color="primary">
+              <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+            </ngx-mat-file-input>
+          </mat-form-field>
+          <div class="file-list">
+            <div class="file-item">
+              <img class="w-100" *ngIf="img_qr" [src]="img_qr">
+            </div>
+          </div>
+        </div>
+          <!-- País y Ciudad -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>País</mat-label>
+          <mat-select (selectionChange)="selectpais($event.value)" formControlName="pai_id" required>
+            <mat-option [value]="item.id" *ngFor="let item of paises">{{ item.nombre }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Ciudad</mat-label>
+          <mat-select formControlName="ciudad_id" required>
+            <mat-option [value]="item.id" *ngFor="let item of ciuadads">{{ item.nombre }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="dataForm.get('ciudad_id')?.hasError('required')">Ciudad es requerida</mat-error>
+        </mat-form-field>
+      </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Precio</mat-label>
+            <input type="number" matInput placeholder="Precio" formControlName="precio" required>
+            <mat-error *ngIf="dataForm.get('precio')?.hasError('required')">Precio es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Nombre" formControlName="nombre" required>
+            <mat-error *ngIf="dataForm.get('nombre')?.hasError('required')">Nombre es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <!-- <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Banner</mat-label>
+            <input matInput placeholder="Banner" formControlName="banner" required>
+            <mat-error *ngIf="dataForm.get('banner')?.hasError('required')">Banner es requerido</mat-error>
+          </mat-form-field>
+        </div> -->
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Programas</mat-label>
+            <mat-select matNativeControl formControlName="certificacion_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of certificaciones">{{
+                item.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('certificacion_id')?.hasError('required')">Programa es
+              requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Descripcion</mat-label>
+            <input matInput placeholder="Descripcion" formControlName="descripcion">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Fecha Inicio</mat-label>
+            <input matInput type="date" [matDatepicker]="picker" formControlName="fecha_ini" required>
+            <mat-datepicker-toggle matSuffix matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="dataForm.get('fecha_ini')?.hasError('required')">Fecha inicio es
+              requerido</mat-error>
+            <mat-hint *ngIf="!dataForm.get('fecha_ini')?.hasError('required')">
+              <small>{{dataForm.value.fecha_ini | date:'longDate' }}</small>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Fecha Fin</mat-label>
+            <input matInput type="date" [matDatepicker]="picker2" formControlName="fecha_fin" required>
+            <mat-datepicker-toggle matSuffix matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error *ngIf="dataForm.get('fecha_fin')?.hasError('required')">Fecha fin es
+              requerido</mat-error>
+            <mat-hint *ngIf="!dataForm.get('fecha_fin')?.hasError('required')">
+              <small>{{dataForm.value.fecha_fin | date:'longDate' }}</small>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Organizadores</mat-label>
+            <input matInput placeholder="Organizadores" formControlName="organizadores" required>
+            <mat-error *ngIf="dataForm.get('organizadores')?.hasError('required')">Organizador es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <!--
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Imagen QR</mat-label>
+            <input matInput placeholder="Img QR" formControlName="img_qr" required>
+            <mat-error *ngIf="dataForm.get('img_qr')?.hasError('required')">Imagen Qr es requerido</mat-error>
+          </mat-form-field>
+        </div> -->
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <ngx-mat-file-input placeholder="Baucher" formControlName="baucher" [multiple]="false" color="primary">
+              <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+            </ngx-mat-file-input>
+          </mat-form-field>
+          <!-- <mat-form-field>
+            <mat-label>Baucher</mat-label>
+            <input matInput placeholder="Baucher" formControlName="baucher" required>
+            <mat-error *ngIf="dataForm.get('baucher')?.hasError('required')">Baucher es
+              requerido</mat-error>
+          </mat-form-field> -->
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Modo</mat-label>
+            <mat-select matNativeControl formControlName="modo" required>
+              <mat-option [value]="item" *ngFor="let item of ['virtual','presencial']">{{
+                item }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('modo')?.hasError('required')">Modo es
+              requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Tipo</mat-label>
+            <mat-select matNativeControl formControlName="tipo" required>
+              <mat-option [value]="item" *ngFor="let item of ['evento','taller']">{{
+                item }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('tipo')?.hasError('required')">Tipo es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Premios Objetivos</mat-label>
+            <input matInput placeholder="Premios Objetivos" formControlName="premios_objetivos" required>
+            <mat-error *ngIf="dataForm.get('premios_objetivos')?.hasError('required')">Premios es requerido</mat-error>
+          </mat-form-field>
+        </div>
+
+ <!-- Dirección -->
+      <div class="col-md-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Dirección</mat-label>
+          <textarea matInput formControlName="direccion" required></textarea>
+        </mat-form-field>
+      </div>
+        <!-- Gimnasio -->
+        <div class="col-md-12">
+          <h5 class="card-title"><strong>Gimnasio:</strong> {{ gimnasio?.nombre || 'No seleccionado' }}</h5>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput [matAutocomplete]="auto" [formControl]="searchDataCtrl" placeholder="Gimnasio">
+            <button *ngIf="searchDataCtrl.value" matSuffix mat-icon-button (click)="clearSelection()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-autocomplete [panelWidth]="400" #auto="matAutocomplete" (optionSelected)="onSelected($event)"
+              [displayWith]="displayWith">
+              <mat-option *ngIf="isLoadingData" class="is-loading">Cargando...</mat-option>
+              <ng-container *ngIf="!isLoadingData">
+                <mat-option *ngFor="let item of filteredData" [value]="item">
+                  <img alt="" class="example-option-img" [src]="item.imagen" height="25">
+                  <span>{{ item.nombre }} {{ item.direccion }}</span>
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Latitud</mat-label>
+            <input matInput formControlName="lat" required>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Longitud</mat-label>
+            <input matInput formControlName="lng" required>
+          </mat-form-field>
+        </div>
+
+        <!-- Mapa -->
+        <div class="col-md-12 position-relative">
+          <img [src]="'./assets/img/marker1.png'" id="centerMarkerImage1" #centerMarkerImage1>
+          <google-map [zoom]="zoom" [center]="{lat: lat, lng: lng}" width="100%"
+            (centerChanged)="onCenterChange()"></google-map>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid"
+    aria-label="SAVE">
+    Guardar
+  </button>
+</mat-dialog-actions>

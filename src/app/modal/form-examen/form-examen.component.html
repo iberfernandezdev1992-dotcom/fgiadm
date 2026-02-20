@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+  <h2>Llena los campos requeridos (*)</h2>
+  <div>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+        <div class="col-md-12">
+          <div class="row">
+            <!-- Titulo Field -->
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-label>Titulo</mat-label>
+                <input matInput placeholder="Titulo" formControlName="titulo" required>
+                <mat-error *ngIf="dataForm.get('titulo')?.hasError('required')">Titulo es requerido</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Cantidad Preguntas Field -->
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-label>Cantidad de Preguntas</mat-label>
+                <input matInput placeholder="Cantidad de Preguntas" type="number" formControlName="cantidad_preguntas" required>
+                <mat-error *ngIf="dataForm.get('cantidad_preguntas')?.hasError('required')">Cantidad de Preguntas es requerido</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Other Fields (Volumenes, Nombre, Tipo, etc.) as per original template -->
+            <!-- ... (same fields as the original code) ... -->
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close>Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="dataForm.invalid">Guardar</button>
+</mat-dialog-actions>

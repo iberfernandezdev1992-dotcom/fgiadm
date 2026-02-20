@@ -1,0 +1,42 @@
+/* Estilo general del modal */
+.mat-dialog-content {
+    font-family: Arial, sans-serif; /* Cambia la fuente según tu preferencia */
+  }
+  
+  /* Sección de datos */
+  .data-section {
+    border: 1px solid #e0e0e0; /* Borde ligero para separar secciones */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 16px; /* Espacio interno */
+    margin-bottom: 16px; /* Espacio entre secciones */
+    background-color: #f9f9f9; /* Color de fondo claro */
+  }
+  
+  /* Estilo de la etiqueta */
+  .label {
+    font-weight: bold;
+    font-size: 1.1em; /* Tamaño de fuente un poco más grande */
+    color: #333; /* Color del texto */
+    margin-bottom: 8px; /* Espacio debajo de la etiqueta */
+  }
+  
+  /* Estilo de los encabezados de sección */
+  h3 {
+    margin: 20px 0 10px; /* Espacio superior e inferior */
+    font-size: 1.5em; /* Tamaño de fuente más grande para secciones */
+    color: #007bff; /* Color azul para destacar */
+  }
+  
+  /* Estilo para imágenes */
+  .data-section img {
+    max-width: 100%; /* Asegúrate de que las imágenes no excedan el ancho de la sección */
+    height: auto; /* Mantener la proporción de las imágenes */
+    border-radius: 4px; /* Bordes ligeramente redondeados para imágenes */
+    margin-bottom: 10px; /* Espacio debajo de las imágenes */
+  }
+  
+  /* Espaciado para los pagos */
+  .data-section p {
+    margin: 4px 0; /* Espacio entre párrafos */
+  }
+  

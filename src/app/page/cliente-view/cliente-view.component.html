@@ -1,0 +1,359 @@
+<h2 mat-dialog-title>Información Cliente</h2>
+<mat-dialog-content class="mat-typography">
+  <div>
+    <br>
+    <div class="row">
+      <div class="col-md-4">
+        <div *ngIf="data" class="card">
+          <img [src]="data.fotografia ? data.fotografia : 'assets/img/img-default.jpg'" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title"><strong>Nombre:</strong> {{ data.nombres }} {{ data.apellidos }}</h5>
+            <h5 class="card-title"><strong>Fecha nacimiento:</strong> {{ data.fecha_nacimiento }}</h5>
+            <h5 class="card-title"><strong>CI:</strong> {{ data.ci}}</h5>
+            <h5 class="card-title"><strong>Celular:</strong> {{ data.celular }}</h5>
+            <h5 class="card-title"><strong>Pasaporte:</strong> {{ data.pasaporte}}</h5>
+            <h5 class="card-title"><strong>CN:</strong> {{ data.cn}}</h5>
+            <h5 class="card-title"><strong>Dirección:</strong> {{ data.direccion }}</h5>
+            <h5 class="card-title"><strong>Email:</strong> {{ data.email }}</h5>
+            <h5 class="card-title"><strong>Responsable:</strong> {{ data.user.nombre }}</h5>
+            <h5 class="card-title"><strong>
+                Información Preliminar
+              </strong></h5>
+            <div class="ql-editor" [innerHTML]="data.informacion_preliminar">
+            </div>
+
+          </div>
+          <div class="card-footer">
+            <small class="text-body-secondary">Creado : {{ data.created_at | date :'short'
+              }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+
+        <!-- dependientes -->
+        <mat-toolbar color="primary" class="mt-0">
+          <mat-toolbar-row>
+            <span>Dependientes</span>
+            <span class="example-spacer"></span>
+            <button (click)="create()" mat-icon-button class="example-icon"
+              aria-label="Example icon-button with menu icon">
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-toolbar-row>
+        </mat-toolbar>
+
+        <mat-form-field>
+          <mat-label>Buscar</mat-label>
+          <input matInput (keyup)="applyFilter3($event)" placeholder="Ex. Mia" #input>
+        </mat-form-field>
+
+        <!-- <div class="mat-elevation-z8"> -->
+        <section class="example-container mat-elevation-z8" tabindex="0">
+          <table mat-table [dataSource]="dataSource3" #sortdependientes="matSort" matSort>
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="imagen" sticky>
+              <th mat-header-cell *matHeaderCellDef> Imagen </th>
+              <td mat-cell *matCellDef="let row"> <img [src]="row.fotografia ?? 'assets/img/img-default.jpg'"
+                  width="80px" alt=""> </td>
+            </ng-container>
+
+            <!-- Progress Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+              <td mat-cell *matCellDef="let row"> {{ row.nombres }} {{ row.apellidos }}
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="ci">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> CI </th>
+              <td mat-cell *matCellDef="let row"> {{ row.ci }} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="celular">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Celular </th>
+              <td mat-cell *matCellDef="let row"> {{ row.celular }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+              <td mat-cell *matCellDef="let row"> {{ row.email }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="accion" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef> Acción </th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button class="example-icon"
+                  aria-label="Example icon-button with menu icon"><mat-icon>edit</mat-icon></button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+            </tr>
+          </table>
+
+          <mat-paginator #pagedependientes [pageSizeOptions]="[5, 10, 25, 100]" aria-label=""></mat-paginator>
+          <!-- </div> -->
+        </section>
+        <!-- end dependientes -->
+
+        <hr>
+        <br>
+
+
+
+        <!-- adjuntos -->
+        <mat-toolbar color="primary" class="mt-0">
+          <mat-toolbar-row>
+            <span>Adjuntos</span>
+            <span class="example-spacer"></span>
+            <!-- <button (click)="create()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+                              <mat-icon>add</mat-icon>
+                            </button> -->
+          </mat-toolbar-row>
+        </mat-toolbar>
+
+        <mat-form-field>
+          <mat-label>Buscar</mat-label>
+          <input matInput (keyup)="applyFilter2($event)" placeholder="Ex. Mia" #input>
+        </mat-form-field>
+
+        <!-- <div class="mat-elevation-z8"> -->
+        <section class="example-container mat-elevation-z8" tabindex="0">
+          <table mat-table [dataSource]="dataSource2" #tablaadjuntos #sortabjunto="matSort" matSort>
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef> Nombre </th>
+              <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
+            </ng-container>
+
+            <!-- Progress Column -->
+            <ng-container matColumnDef="descarga">
+              <th mat-header-cell *matHeaderCellDef> Descargar </th>
+              <td mat-cell *matCellDef="let row"> <a target="_blank" [href]="row.ruta"
+                  [download]="row.nombre">Descargar</a>
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="eliminar" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+              <td mat-cell *matCellDef="let row">
+                <button (click)="eliminarAdjunto(row)" mat-icon-button class="example-icon" aria-label="">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+            </tr>
+          </table>
+
+          <mat-paginator #pageadjunto [pageSizeOptions]="[5, 10, 25, 100]" aria-label=""></mat-paginator>
+          <!-- </div> -->
+        </section>
+        <!-- end adjuntos -->
+
+
+        <hr>
+        <br>
+        <!-- cita -->
+        <mat-toolbar color="primary" class="mt-0">
+          <mat-toolbar-row>
+            <span>Citas</span>
+            <span class="example-spacer"></span>
+            <button (click)="addcitas()" mat-icon-button class="example-icon"
+              aria-label="Example icon-button with menu icon">
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-toolbar-row>
+        </mat-toolbar>
+
+        <mat-form-field>
+          <mat-label>Buscar</mat-label>
+          <input matInput (keyup)="applyFilter1($event)" placeholder="Ex. Mia" #input>
+        </mat-form-field>
+
+        <!-- <div class="mat-elevation-z8"> -->
+        <section class="example-container mat-elevation-z8" tabindex="0">
+          <table mat-table [dataSource]="dataSource1" #tablacitas #sortcitas="matSort" matSort>
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="etapa" sticky>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Etapa </th>
+              <td mat-cell *matCellDef="let row"> {{row.etapa}} </td>
+            </ng-container>
+
+            <!-- Progress Column -->
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+              <td mat-cell *matCellDef="let row"> {{row.estado}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="start">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Inicio </th>
+              <td mat-cell *matCellDef="let row"> {{row.start}} </td>
+            </ng-container>
+
+            <!-- Fruit Column -->
+            <ng-container matColumnDef="end">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Fin </th>
+              <td mat-cell *matCellDef="let row"> {{row.end}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="accion" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef> Acción </th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button [matMenuTriggerFor]="menucita" aria-label="botón con menú">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menucita="matMenu">
+                  <button mat-menu-item (click)="addcitas(row)">Editar</button>
+                  <button mat-menu-item (click)="deletecitas(row)">Eliminar</button>
+                  <!-- <button mat-menu-item (click)="verCliente(row)">Ver</button> -->
+                </mat-menu>
+
+                <!-- <button (click)="addcitas(row)" mat-icon-button class="example-icon" aria-label="">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button (click)="deletecitas(row)" mat-icon-button class="example-icon" aria-label="">
+                          <mat-icon>delete</mat-icon>
+                        </button> -->
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="5">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+            </tr>
+          </table>
+
+          <mat-paginator #pagecitas pageSize="5" [pageSizeOptions]="[5, 10, 25, 100]" aria-label=""></mat-paginator>
+          <!-- </div> -->
+        </section>
+        <!-- citaend -->
+
+        <hr>
+        <br>
+
+
+        <!-- ventas -->
+        <mat-toolbar color="primary" class="mt-0">
+          <mat-toolbar-row>
+            <span>Servicios</span>
+            <span class="example-spacer"></span>
+            <button (click)="addservicio()" mat-icon-button class="example-icon" aria-label="add">
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-toolbar-row>
+        </mat-toolbar>
+        <mat-form-field>
+          <mat-label>Buscar</mat-label>
+          <input matInput (keyup)="applyFilterventas($event)" placeholder="Ex. Mia" #input>
+        </mat-form-field>
+        <section class="example-container mat-elevation-z8" tabindex="0">
+
+          <!-- <div class="mat-elevation-z8"> -->
+          <table mat-table [dataSource]="dataSourceventas" #tablaventas #sortventas="matSort" matSort>
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="servicios" sticky>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicios </th>
+              <td mat-cell *matCellDef="let row"> {{row.servicios.length}} </td>
+            </ng-container>
+
+            <!-- Progress Column -->
+            <ng-container matColumnDef="monto">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
+              <td mat-cell *matCellDef="let row"> {{row.monto}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="descuento">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Descuento </th>
+              <td mat-cell *matCellDef="let row"> {{row.descuento}} </td>
+            </ng-container>
+
+            <!-- Fruit Column -->
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+              <td mat-cell *matCellDef="let row"> {{row.total}} </td>
+            </ng-container>
+
+            <!-- Fruit Column -->
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+              <td mat-cell *matCellDef="let row"> {{row.estado}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created_at">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Creado </th>
+              <td mat-cell *matCellDef="let row"> {{row.created_at | date}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="accion" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef> Acción </th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="botón con menú">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="verventa(row)">Ver y Pagar</button>
+                  <button mat-menu-item (click)="deleteventa(row)">Eliminar</button>
+                  <button mat-menu-item [matMenuTriggerFor]="estado">Cambiar estado</button>
+                  <!-- <button mat-menu-item (click)="verCliente(row)">Ver</button> -->
+                </mat-menu>
+                <mat-menu #estado="matMenu">
+                  <button mat-menu-item (click)="cambiarestadoVenta(row,item)"
+                    *ngFor="let item of ['En curso','Terminado','Fallido']">{{ item }}</button>
+                </mat-menu>
+                <!-- <button (click)="deleteventa(row)" mat-icon-button class="example-icon" aria-label="">
+                  <mat-icon>delete</mat-icon>
+                </button> -->
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsventas"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsventas;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="5">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+            </tr>
+          </table>
+
+          <mat-paginator #pageventas pageSize="5" [pageSizeOptions]="[5, 10, 25, 100]" aria-label=""></mat-paginator>
+          <!-- </div> -->
+        </section>
+        <!-- ventasend -->
+
+
+      </div>
+    </div>
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warning" mat-dialog-close aria-label="Cancelar">
+    Cerrar
+  </button>
+</mat-dialog-actions>

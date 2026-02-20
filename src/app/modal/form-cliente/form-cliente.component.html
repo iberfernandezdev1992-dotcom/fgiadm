@@ -1,0 +1,256 @@
+<h5 mat-dialog-title class="text-center">{{ dialogTitle }} <span *ngIf="cliente">de : <span class="mayusculas">{{
+      cliente.nombres }} {{
+      cliente.apellidos }}</span></span>
+</h5>
+<mat-dialog-content class="mat-typography w-100 h-100">
+  <h4>Llena los campos requeridos (*)</h4>
+  <div>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+        <div class="col-md-4">
+
+          <!-- <file-upload [control]="control" [ngClass]="{'fileupload': data.fotografia}">
+            <ng-template let-isFileDragDropAvailable="isFileDragDropAvailable" #placeholder>
+              <div style="width:240px" *ngIf="control.size === 0">
+                <div class="icon">
+                  <mat-icon>upload</mat-icon>
+                </div>
+
+                <div class="upload-text">
+                  <ng-container *ngIf="isFileDragDropAvailable; else isNotDragDropAvailable">
+                    <b>Arrastrar y soltar</b> archivos<br> o haga clic aquí
+                  </ng-container>
+                  <ng-template #isNotDragDropAvailable>
+                    <b>haga clic aquí</b> para<br> elegir un archivo
+                  </ng-template>
+                </div>
+              </div>
+            </ng-template>
+
+            <ng-template let-i="index" let-file="file" let-control="control" #item>
+              <div class="overlay">
+                <span class="delete-button" (click)="control.removeFile(file)">
+                  <mat-icon>delete</mat-icon>
+                </span>
+                <img *ngIf="control.valid" [src]="uploadedFile | async">
+              </div>
+            </ng-template>
+          </file-upload> -->
+          <mat-form-field id="fileimg">
+            <ngx-mat-file-input placeholder="Escoge una fotografía" [formControl]="fileControl" [multiple]="false"
+              accept="image/*" color="primary">
+              <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+            </ngx-mat-file-input>
+          </mat-form-field>
+          <div class="file-list">
+            <div class="file-item">
+              <img class="w-100" *ngIf="image" [src]="image ? image : '/assets/img/img-default.jpg'">
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-label>Apellidos</mat-label>
+                <input class="mayusculas" (keyup)="mayus(apellidos)" #apellidos matInput placeholder="Apellidos"
+                  formControlName="apellidos" required>
+                <mat-error *ngIf="dataForm.get('apellidos')?.hasError('required')">Apellidos es requerido</mat-error>
+                <mat-error *ngIf="dataForm.get('apellidos')?.hasError('maxlength')">Apellidos no puede tener más de 50
+                  caracteres</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-label>Nombres</mat-label>
+                <input class="mayusculas" (keyup)="mayus(name)" #name matInput placeholder="Nombres"
+                  formControlName="nombres" required>
+                <mat-error *ngIf="dataForm.get('nombres')?.hasError('required')">Nombres es requerido</mat-error>
+                <mat-error *ngIf="dataForm.get('nombres')?.hasError('maxlength')">Nombres no puede tener más de 50
+                  caracteres</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input matInput type="date" [matDatepicker]="picker" formControlName="fecha_nacimiento" required>
+                <mat-datepicker-toggle matSuffix matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="dataForm.get('fecha_nacimiento')?.hasError('required')">Fecha de nacimiento es
+                  requerido</mat-error>
+                <mat-hint *ngIf="!dataForm.get('fecha_nacimiento')?.hasError('required')">
+                  <small>{{dataForm.value.fecha_nacimiento | date:'longDate' }}</small>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>CI</mat-label>
+                <input matInput placeholder="CI" formControlName="ci" required>
+                <mat-error *ngIf="dataForm.get('ci')?.hasError('required')">CI es requerido</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>Celular <span *ngIf="cliente">(Opcional)</span></mat-label>
+                <input matInput placeholder="Celular" formControlName="celular" [required]="!cliente">
+                <mat-error *ngIf="!cliente && dataForm.get('celular')?.hasError('required')">Celular es
+                  requerido</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>Email (Opcional)</mat-label>
+                <input matInput placeholder="Email" formControlName="email">
+                <mat-error *ngIf="dataForm.get('email')?.hasError('email')">Ingrese una dirección de correo
+                  electrónico.</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>Pasaporte (Opcional)</mat-label>
+                <input class="mayusculas" (keyup)="mayus(pasaporte)" #pasaporte matInput placeholder="Pasaporte"
+                  formControlName="pasaporte">
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>CN (Opcional)</mat-label>
+                <input class="mayusculas" (keyup)="mayus(cnv)" #cnv matInput placeholder="CN" formControlName="cn">
+              </mat-form-field>
+            </div>
+            <div *ngIf="!cliente" class="col-md-4">
+              <mat-form-field>
+                <mat-label>Responsable</mat-label>
+                <mat-select matNativeControl formControlName="user_id" required>
+                  <mat-option [value]="item.id" *ngFor="let item of responsables">{{
+                    item.nombre }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div *ngIf="cliente" class="col-md-4">
+              <mat-form-field>
+                <mat-label>Parentesco</mat-label>
+                <mat-select matNativeControl formControlName="parentesco" required>
+                  <mat-option [value]="item" *ngFor="let item of ['Hijos','Hermanos','Padres','Conyugue']">{{ item
+                    }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-8">
+              <mat-form-field>
+                <mat-label>Dirección (Opcional)</mat-label>
+                <input matInput placeholder="Dirección" formControlName="direccion">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 mt-0" *ngIf="!cliente">
+          <p>Información preliminar <span>*</span> </p>
+          <div fxLayout="row m-0" fxLayoutAlign="start start">
+            <quill-editor placeholder="" class="w-100" [styles]="{height: '150px'}"
+              formControlName="informacion_preliminar"></quill-editor>
+            <mat-error *ngIf="dataForm.get('informacion_preliminar')?.hasError('required')">Información preliminar es
+              requerido</mat-error>
+          </div>
+        </div>
+        <!-- <div class="col-md-6">
+          <mat-toolbar color="primary" class="mt-0">
+            <mat-toolbar-row>
+              <span>Adjuntos</span>
+              <span class="example-spacer"></span>
+              <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+                <mat-icon>add</mat-icon>
+              </button>
+            </mat-toolbar-row>
+          </mat-toolbar>
+          <table *ngIf="data && data.adjuntos && data.adjuntos.length"
+            class="table table-striped table-inverse table-responsive">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Nombre</th>
+                <th>Descargar</th>
+                <th>Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data.adjuntos">
+                <td scope="row">{{ item.nombre }}</td>
+                <td><a target="_blank" [href]="item.ruta" [download]="item.nombre">Descargar</a>
+                </td>
+                <td>
+                  <button mat-raised-button color="primary" class="save-button" (click)="eliminarAdjunto(item)"
+                    aria-label="SAVE">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div> -->
+
+      </div>
+
+      <!-- <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="save-info">
+          <label class="form-check-label" for="save-info">Save this information for next time</label>
+        </div> -->
+    </form>
+    <!-- <hr class="my-4">
+
+    <div *ngIf="!cliente" class="row justify-content-center">
+      <h2 class="text-center">Documenteos Adjuntos</h2>
+      <file-upload [control]="controladjunto">
+        <ng-template let-isFileDragDropAvailable="isFileDragDropAvailable" #placeholder>
+          <file-upload-drop-zone>
+            <ng-container *ngIf="isFileDragDropAvailable; else isNotDragDropAvailable">
+              <b>Arrastrar y soltar</b><br> O haga clic aquí
+            </ng-container>
+            <ng-template #isNotDragDropAvailable>
+              <b>haga clic aquí</b> o<br> Seleccione un archivo
+            </ng-template>
+          </file-upload-drop-zone>
+        </ng-template>
+        <ng-template let-i="index" let-file="file" let-control="control" #item>
+          <file-upload-list-item [index]="i" [file]="file" [control]="control">Eliminar</file-upload-list-item>
+        </ng-template>
+      </file-upload>
+
+      <table *ngIf="data && data.adjuntos && data.adjuntos.length"
+        class="table table-striped table-inverse table-responsive">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Nombre</th>
+            <th>Descargar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data.adjuntos">
+            <td scope="row">{{ item.nombre }}</td>
+            <td><a target="_blank" [href]="item.ruta" [download]="item.nombre">Descargar</a>
+            </td>
+            <td>
+              <button mat-raised-button color="primary" class="save-button" (click)="eliminarAdjunto(item)"
+                aria-label="SAVE">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid"
+    aria-label="SAVE">
+    Guardar
+  </button>
+</mat-dialog-actions>

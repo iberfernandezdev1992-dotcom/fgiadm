@@ -1,0 +1,17 @@
+#centerMarkerImage1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 44px; // image width
+    // height: 24px; // image height
+    z-index: 1;
+    // top:;
+    // transition: 2s linear !important;
+    transition: 1s cubic-bezier(0.18, 0.89, 0.32, 1.28) !important;
+}
+.map-container {
+  height: 500px;
+}

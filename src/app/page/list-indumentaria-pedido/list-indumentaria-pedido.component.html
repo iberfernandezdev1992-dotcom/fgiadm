@@ -1,0 +1,126 @@
+<div class="flex flex-col flex-auto w-full">
+  <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+    <mat-toolbar color="primary" class="mt-0">
+      <mat-toolbar-row>
+        <span>INDUMENTARIAS</span>
+        <span class="example-spacer"></span>
+
+
+        <button (click)="create()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <br><br>
+    <!-- Filtros -->
+    <mat-form-field>
+      <mat-icon matPrefix class="icon-size-5">search</mat-icon>
+      <input matInput [autocomplete]="'off'" [placeholder]="'Buscar'" #search>
+      <button *ngIf="ifvalInput()" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <div class="example-container mat-elevation-z8">
+      <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+          Se alcanzó el límite de tasa de API.Se restablecerá en un minuto.
+        </div>
+      </div>
+
+      <div class="example-table-container sm:overflow-y-auto table-responsive">
+
+        <table mat-table matTableExporter [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+          multiTemplateDataRows matSortActive="created_at" matSortDisableClear matSortDirection="desc"
+          class="mat-elevation-z8 w-full">
+
+          <ng-container matColumnDef="id" sticky>
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.id }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="instructor">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Instructor </th>
+            <td mat-cell *matCellDef="let row"> {{ row.instructor.primer_nombre }} {{ row.instructor.segundo_nombre }}
+              {{ row.instructor.apellido_paterno
+              }} {{ row.instructor.apellido_materno }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="ciudad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Pais - Ciudad </th>
+            <td mat-cell *matCellDef="let row"> {{ row.instructor.ciudad.pais.nombre }} {{ row.instructor.ciudad.nombre
+              }}
+            </td>
+          </ng-container>
+          <!-- Progress Column -->
+          <ng-container matColumnDef="productos">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Productos </th>
+            <td mat-cell *matCellDef="let row"> {{ row.detalles.length }}
+            </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+            <td mat-cell *matCellDef="let row"> {{ row.total }} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+            <td mat-cell *matCellDef="let row"> {{ row.estado }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+            <td mat-cell *matCellDef="let row"> {{ row.descripcion }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="created_at">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Creado </th>
+            <td mat-cell *matCellDef="let row"> {{row.created_at | date:'d MMMM y, h:mm a'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="accion" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef> Acción </th>
+            <td mat-cell *matCellDef="let row">
+              <!-- <button mat-icon-button (click)="editardependiente(row)" class="example-icon"
+                              aria-label="Example icon-button with menu icon"><mat-icon>edit</mat-icon></button> -->
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="botón con menú">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <!-- <button mat-menu-item (click)="verVenta(row)">Ver</button>-->
+                <button mat-menu-item *ngIf="ifauthenticadoAuth(['ceo','administrador','manager'])"
+                  (click)="verventa(row)">Ver</button>
+                <button mat-menu-item *ngIf="ifauthenticadoAuth(['ceo','administrador','manager'])"
+                  (click)="deleteVenta(row)">Eliminar</button>
+                <button mat-menu-item [matMenuTriggerFor]="estadovent">Cambiar estado</button>
+              </mat-menu>
+              <mat-menu #estadovent="matMenu">
+                <button mat-menu-item (click)="cambiarestadoVenta(row,item)"
+                  *ngFor="let item of ['pendiente','entregado','cancelado']">{{
+                  item }}</button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data</td>
+          </tr>
+        </table>
+      </div>
+      <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)"
+        showFirstLastButtons="true" aria-label="Select page">
+      </mat-paginator>
+      <!-- <mat-paginator #paginator [pageIndex]="currentPage" [pageSize]="filtertable.limit"
+          [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+        </mat-paginator> -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>{{ dialogTitle }} <span *ngIf="evento">Para {{ evento.descripcion }}</span> </h2>
+<mat-dialog-content class="mat-typography">
+  <h2>Llena los campos requeridos (*)</h2>
+  <div>
+    <br>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+        <div class="col-md-6" *ngIf="!evento">
+          <mat-form-field>
+            <mat-label>Evento</mat-label>
+            <mat-select matNativeControl formControlName="evento_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of eventos">{{
+                item.nombre_capacitador }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('evento_id')?.hasError('required')">Evento es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Nombre" formControlName="nombre" required>
+            <mat-error *ngIf="dataForm.get('nombre')?.hasError('required')">Nombre es requerido</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Monto</mat-label>
+            <input matInput type="number" placeholder="Monto" formControlName="monto" required>
+            <mat-error *ngIf="dataForm.get('monto')?.hasError('required')">Monto es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Fecha</mat-label>
+            <input matInput type="date" [matDatepicker]="picker" formControlName="fecha" required>
+            <mat-datepicker-toggle matSuffix matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="dataForm.get('fecha')?.hasError('required')">Fecha es
+              requerido</mat-error>
+            <mat-hint *ngIf="!dataForm.get('fecha')?.hasError('required')">
+              <small>{{dataForm.value.fecha | date:'longDate' }}</small>
+            </mat-hint>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid"
+    aria-label="SAVE">
+    Guardar
+  </button>
+</mat-dialog-actions>

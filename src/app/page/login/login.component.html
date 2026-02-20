@@ -1,0 +1,55 @@
+<div id="login" fxLayout="column">
+
+  <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+
+    <div id="login-form">
+
+      <form name="loginForm" [formGroup]="loginForm" novalidate class="p-5 frlog">
+        <div class="logo mb-md-5">
+          <img src="/assets/img/logo.png" class="img-fluid">
+        </div>
+        <div class="title text-center text-white font-weight-bold">Inicia sesión</div>
+        <mat-form-field appearance="fill">
+          <mat-icon matSuffix>person</mat-icon>
+          <input matInput placeholder="Correo electrónico" formControlName="email">
+          <mat-error>
+            Correo electrónico es requerido
+          </mat-error>
+        </mat-form-field>
+        <br>
+        <br>
+        <mat-form-field appearance="fill">
+          <!-- <mat-label>Contraseña</mat-label> -->
+          <input matInput placeholder="Contraseña" type="password" formControlName="password">
+          <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+          <mat-error>
+            Se requiere contraseña
+          </mat-error>
+        </mat-form-field>
+
+        <!-- <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+                        <mat-checkbox class="remember-me" aria-label="Remember Me">
+                            Remember Me
+                        </mat-checkbox>
+
+                        <a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
+                            Forgot Password?
+                        </a>
+                    </div> -->
+
+        <button mat-raised-button class="submit-button text-white btn-primary" aria-label="INICIAR SESIÓN"
+          (click)="login()" [disabled]="loginForm.invalid">
+          Entrar
+        </button>
+
+      </form>
+      <!-- <section>
+                    <button mat-raised-button color="primary" (click)="crearCuenta()">Registrarme</button>
+                </section> -->
+
+
+    </div>
+
+  </div>
+
+</div>

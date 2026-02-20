@@ -1,0 +1,143 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+  <h2>Llena los campos requeridos (*)</h2>
+  <div>
+    <br>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <mat-form-field id="fileimg">
+            <ngx-mat-file-input placeholder="Escoge una banner" [formControl]="fileControl1" [multiple]="false"
+              accept="image/*" color="primary">
+              <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+            </ngx-mat-file-input>
+          </mat-form-field>
+          <div class="file-list">
+            <div class="file-item">
+              <img class="w-100" *ngIf="banner" [src]="banner ? banner : '/assets/img/img-default.jpg'">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field id="fileimg">
+            <ngx-mat-file-input placeholder="Escoge una imagen" [formControl]="fileControl" [multiple]="false"
+              accept="image/*" color="primary">
+              <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+            </ngx-mat-file-input>
+          </mat-form-field>
+          <div class="file-list">
+            <div class="file-item">
+              <img class="w-100" *ngIf="image" [src]="image ? image : '/assets/img/img-default.jpg'">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Pais</mat-label>
+            <mat-select (selectionChange)="selectpais($event.value)" matNativeControl formControlName="pai_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of paises">{{
+                item.nombre }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Ciudad</mat-label>
+            <mat-select matNativeControl formControlName="ciudad_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of ciuadads">{{
+                item.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('pai_id')?.hasError('required')">Ciuad es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+
+          <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Nombre" formControlName="nombre" required>
+            <mat-error *ngIf="dataForm.get('nombre')?.hasError('required')">Nombre es requerido</mat-error>
+          </mat-form-field>
+
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Estado</mat-label>
+            <mat-select matNativeControl formControlName="estado" required>
+              <mat-option [value]="item" *ngFor="let item of ['activo','inactivo']">{{
+                item }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('estado')?.hasError('required')">Estado es requerido</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Horario</mat-label>
+            <input matInput placeholder="Horario" formControlName="hoario" required>
+            <mat-error *ngIf="dataForm.get('hoario')?.hasError('required')">Horario es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Direccion</mat-label>
+            <input matInput placeholder="Direccion" formControlName="direccion" required>
+            <mat-error *ngIf="dataForm.get('direccion')?.hasError('required')">Direccion es requerido</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-12">
+          <!-- <mat-form-field>
+            <mat-label>Descripcion</mat-label>
+            <textarea matInput placeholder="Descripción" formControlName="descripcion" required></textarea>
+          </mat-form-field> -->
+          <p>Descripción <span>*</span> </p>
+          <div fxLayout="row m-0" fxLayoutAlign="start start">
+            <quill-editor placeholder="" class="w-100" [styles]="{height: '150px'}"
+              formControlName="descripcion"></quill-editor>
+            <mat-error *ngIf="dataForm.get('descripcion')?.hasError('required')">Descripción es
+              requerido</mat-error>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Celular</mat-label>
+            <input matInput placeholder="Celular" formControlName="celular" required>
+            <mat-error *ngIf="dataForm.get('celular')?.hasError('required')">Celular es requerido</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Latitud</mat-label>
+            <input matInput placeholder="Latitud" formControlName="lat" required>
+            <mat-error *ngIf="dataForm.get('lat')?.hasError('required')">Latitud es
+              requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Longitud</mat-label>
+            <input matInput placeholder="Longitud" formControlName="lng" required>
+            <mat-error *ngIf="dataForm.get('lng')?.hasError('required')">Longitud es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="position-relative">
+          <img [src]="'./assets/img/marker1.png'" id="centerMarkerImage1" #centerMarkerImage1>
+          <google-map [zoom]="zoom" [center]="{lat: lat, lng: lng}" width="100%" (centerChanged)="onCenterChange()" />
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid"
+    aria-label="SAVE">
+    Guardar
+  </button>
+</mat-dialog-actions>

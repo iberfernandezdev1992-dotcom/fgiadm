@@ -1,0 +1,24 @@
+/* Estilos generales de contenedor */
+.pregunta-list-container {
+  // max-width: 800px;
+  // margin: 0 auto;
+  padding: 20px;
+}
+
+/* Estilo para el botón de agregar */
+.add-button {
+  margin-bottom: 15px;
+}
+
+/* Estilos específicos para mat-expansion-panel */
+::ng-deep .mat-expansion-panel-header {
+  margin-bottom: 10px;
+  height: 80px !important;
+}
+
+/* Estilos para los botones de acción */
+::ng-deep .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

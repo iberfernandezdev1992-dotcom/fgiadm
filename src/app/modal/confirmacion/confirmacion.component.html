@@ -1,0 +1,11 @@
+<!-- <h1 mat-dialog-title style="text-align: center;">Eliminar</h1> -->
+<div mat-dialog-content style="text-align: center;">
+  <p>{{ valdata.title }}</p>
+  <!-- <mat-form-field>
+    <input matInput [(ngModel)]="data.animal">
+  </mat-form-field> -->
+</div>
+<div mat-dialog-actions style="text-align: center;display: block;">
+  <button mat-button color="primary" (click)="confirm(false)">NO</button>
+  <button mat-button color="warning" (click)="confirm(true)" cdkFocusInitial>Si</button>
+</div>

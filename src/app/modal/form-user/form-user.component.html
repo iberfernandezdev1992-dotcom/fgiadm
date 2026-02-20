@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-typography">
+  <h2>Llena los campos requeridos (*)</h2>
+  <div>
+    <br>
+    <form [formGroup]="dataForm">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Pais</mat-label>
+            <mat-select matNativeControl formControlName="pai_id" required>
+              <mat-option [value]="item.id" *ngFor="let item of paises">{{
+                item.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="dataForm.get('pai_id')?.hasError('required')">Pais es requerido</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Nombre" formControlName="nombre" required>
+            <mat-error *ngIf="dataForm.get('nombre')?.hasError('required')">Nombre es requerido</mat-error>
+            <mat-error *ngIf="dataForm.get('nombre')?.hasError('maxlength')">Nombre no puede tener más de 50
+              caracteres</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="email" placeholder="Email" formControlName="email" required>
+            <mat-error *ngIf="dataForm.get('email')?.hasError('required')">Correo
+              electrónico es requerido</mat-error>
+            <mat-error *ngIf="dataForm.get('email')?.hasError('email')">Ingrese una dirección de correo
+              electrónico.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <hr class="my-4">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Rol</mat-label>
+            <mat-select matNativeControl formControlName="rol" required>
+              <mat-option [value]="item" *ngFor="let item of ['ceo','administrador','manager','brand','tienda']">{{ item
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Contraseña</mat-label>
+            <mat-icon matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+            <input name="password" formControlName="password" [type]="hide ? 'password' : 'text'" matInput
+              [required]="!data">
+            <mat-error *ngIf="dataForm.get('password')?.hasError('required')">Contraseña es requerido</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" class="save-button" (click)="guardar()" [disabled]="dataForm.invalid"
+    aria-label="SAVE">
+    Guardar
+  </button>
+</mat-dialog-actions>

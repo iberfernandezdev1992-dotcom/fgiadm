@@ -1,0 +1,110 @@
+#login {
+    width: 100%;
+    min-height: 100vh;
+    background-attachment: fixed;
+    background: #ffffff;
+    // background: #3f51b5;
+    // background: url('/assets/imgs/fondo.jpg') no-repeat;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    // background-size: cover;
+    #login-form-wrapper {
+        flex: 1 0 auto;
+        // padding: 32px;
+        #login-form {
+            margin: auto;
+            // width: 384px;
+            max-width: 450px;
+            padding: 32px;
+            text-align: center;
+            .logo {
+                // width: 128px;
+                margin: 32px auto;
+            }
+            .title {
+                font-size: 20px;
+                margin: 16px 0 32px 0;
+            }
+            form {
+                width: 100%;
+                text-align: left;
+                mat-form-field {
+                    width: 100%;
+                }
+                mat-checkbox {
+                    margin: 0;
+                }
+                .remember-forgot-password {
+                    font-size: 13px;
+                    margin-top: 8px;
+                    .remember-me {
+                        margin-bottom: 16px
+                    }
+                    .forgot-password {
+                        font-size: 13px;
+                        font-weight: 600;
+                        margin-bottom: 16px
+                    }
+                }
+                .submit-button {
+                    background: #008000 !important;
+                    width: 100%;
+                    margin: 16px auto;
+                    display: block;
+                }
+            }
+            .register {
+                margin: 32px auto 24px auto;
+                font-weight: 600;
+                .text {
+                    margin-right: 8px;
+                }
+            }
+            .separator {
+                font-size: 15px;
+                font-weight: 600;
+                margin: 24px auto;
+                position: relative;
+                overflow: hidden;
+                width: 100px;
+                .text {
+                    display: inline-flex;
+                    position: relative;
+                    padding: 0 8px;
+                    z-index: 9999;
+                    &:before,
+                    &:after {
+                        content: '';
+                        display: block;
+                        width: 30px;
+                        position: absolute;
+                        top: 10px;
+                        border-top: 1px solid;
+                    }
+                    &:before {
+                        right: 100%;
+                    }
+                    &:after {
+                        left: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.frlog {
+    background: #2d2b7f;
+    border-radius: 20px;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    background: #ffffff !important;
+    border-radius: 4px 4px 4px 4px !important;
+    padding: 0.1em 0.7em !important;
+}
+
+.mat-error {
+    color: white !important;
+}

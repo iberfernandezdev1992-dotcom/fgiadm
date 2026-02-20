@@ -1,0 +1,53 @@
+// /* Column Widths */
+// .mat-column-number,
+// .mat-column-state {
+//   max-width: 64px;
+// }
+
+// .mat-column-created {
+//   max-width: 124px;
+// }
+.example-container {
+  // height: 400px;
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+}
+
+table {
+  width: 800px;
+}
+
+td.mat-column-star {
+  width: 20px;
+  padding-right: 8px;
+}
+
+th.mat-column-position, td.mat-column-position {
+  padding-left: 8px;
+}
+
+.mat-mdc-table-sticky-border-elem-right {
+  border-left: 1px solid #e0e0e0;
+}
+
+.mat-mdc-table-sticky-border-elem-left {
+  border-right: 1px solid #e0e0e0;
+}
+
+
+//
+.mat-mdc-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  // border-color: currentColor;
+  background: lavender;
+}
+
+.demo-row-is-clicked {
+  font-weight: bold;
+}
